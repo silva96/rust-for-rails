@@ -4,11 +4,7 @@ A self-contained, offline-capable course that teaches Rust to Ruby on Rails deve
 animated "video" lessons you can pause, scrub and jump around in, plus checkpoints, quizzes,
 summaries and hands-on exercises.
 
-[![Donate with PayPal](https://img.shields.io/badge/%E2%99%A5%20Donate-PayPal-e0245e?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=8BKEMESVG3XS2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-
-> **Enjoying the course?** It is free and open source. If it helped you,
-> [a donation](https://www.paypal.com/donate/?hosted_button_id=8BKEMESVG3XS2) helps keep it going.
 
 ## Open it
 
@@ -284,9 +280,7 @@ generated narration.
 
 [![Donate with PayPal](https://img.shields.io/badge/%E2%99%A5%20Donate-PayPal-e0245e?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=8BKEMESVG3XS2)
 
-The course is free and open source. If it helped you, a donation helps keep it going. In the app, the donate
-button is always visible (top bar and sidebar), and the course also asks once you finish a module and when you
-finish the whole course.
+The course is free and open source. If it helped you, a donation helps keep it going.
 
 ## License
 
