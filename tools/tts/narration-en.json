@@ -1,0 +1,2398 @@
+[
+ {
+  "key": "f16d5ed1",
+  "text": "Welcome to Rust for Rails Devs. You already know how to ship web apps. Now we will teach your instincts a new language."
+ },
+ {
+  "key": "5a8792ce",
+  "text": "In this first lesson: why Rust is worth your time, and what changes when you move over from Ruby."
+ },
+ {
+  "key": "b843d7e8",
+  "text": "Ruby makes a bargain: it trusts you, stays out of your way, and catches mistakes while the program runs."
+ },
+ {
+  "key": "b980949e",
+  "text": "Rust makes the opposite bargain. The compiler checks your work up front, so whole categories of bugs never reach production."
+ },
+ {
+  "key": "a946f84b",
+  "text": "So the friction moves. You stop debugging in production and start negotiating with the compiler."
+ },
+ {
+  "key": "87705a6c",
+  "text": "Here is what that strictness buys you."
+ },
+ {
+  "key": "0af67b5c",
+  "text": "Speed. Rust compiles to native machine code. For CPU-heavy work it is commonly ten to a hundred times faster than Ruby."
+ },
+ {
+  "key": "6746a81f",
+  "text": "Memory. There is no garbage collector. Instead, ownership rules checked at compile time decide exactly when memory is freed. No GC pauses, and a tiny footprint."
+ },
+ {
+  "key": "47919947",
+  "text": "Safety. No undefined method on nil, no data races between threads. They become compile errors instead of pager alerts."
+ },
+ {
+  "key": "90fa9016",
+  "text": "Refactoring gets fearless. Change a type, and the compiler hands you a to-do list of everything you broke."
+ },
+ {
+  "key": "96189707",
+  "text": "The tooling is excellent and it all comes standard, and you deploy one self-contained binary."
+ },
+ {
+  "key": "456fdcf4",
+  "text": "Here is a bug every Rails developer has shipped. find_by returns nil, and calling name on it blows up."
+ },
+ {
+  "key": "12e73af6",
+  "text": "You find out in production, from an exception tracker, at three in the morning."
+ },
+ {
+  "key": "76f550ec",
+  "text": "In Rust, a lookup that might fail returns an Option: either Some, with the user inside, or None. You cannot reach inside it without first checking which one you got."
+ },
+ {
+  "key": "ad479202",
+  "text": "So this code does not even compile. The bug is caught on your laptop, in seconds."
+ },
+ {
+  "key": "02dd0649",
+  "text": "That is the core idea of this whole course. Things Ruby checks at runtime, Rust checks at compile time."
+ },
+ {
+  "key": "d0bd6ac1",
+  "text": "You do not have to throw Rails away. Rust shines right next to it."
+ },
+ {
+  "key": "5d72a490",
+  "text": "You can write native extensions for the hot paths of a Rails app. Tools like magnus make Rust callable from Ruby."
+ },
+ {
+  "key": "32cb0461",
+  "text": "You can carve out high throughput services, like webhook receivers or websocket servers."
+ },
+ {
+  "key": "48283bfd",
+  "text": "Rust is fantastic for command line tools and for heavy background workers."
+ },
+ {
+  "key": "b37e6467",
+  "text": "And yes, you can build full web apps. By Module 5 you will build a JSON API with Axum and SQLx."
+ },
+ {
+  "key": "55bfa505",
+  "text": "Quick check before we move on. Pick an answer to continue."
+ },
+ {
+  "key": "ca2a6607",
+  "text": "One mindset shift to carry through this course."
+ },
+ {
+  "key": "3fe91166",
+  "text": "The compiler is your pair programmer. Its error messages are famously helpful, often down to the exact fix."
+ },
+ {
+  "key": "37fcc33b",
+  "text": "You will hit a wall around ownership. Everyone does. It passes, and we will take it slowly."
+ },
+ {
+  "key": "edbacdd8",
+  "text": "Everything you know about web apps, HTTP, SQL, testing and design still applies. You are not starting from zero."
+ },
+ {
+  "key": "e652e05b",
+  "text": "Let's recap what we covered."
+ },
+ {
+  "key": "1f72ef8a",
+  "text": "Rust is compiled, statically typed and has no garbage collector."
+ },
+ {
+  "key": "da49c763",
+  "text": "Bugs that Ruby reports at runtime, like NoMethodError on nil, are compile errors in Rust."
+ },
+ {
+  "key": "e01df014",
+  "text": "Possibly-missing values are Option T . Rust has no nil."
+ },
+ {
+  "key": "c9de08da",
+  "text": "Rust complements Rails: native extensions, fast services, CLIs, workers, or full web apps."
+ },
+ {
+  "key": "73f82c5c",
+  "text": "Treat the compiler like a pair programmer and read its error messages."
+ },
+ {
+  "key": "6739ddc1",
+  "text": "In Ruby you juggle several tools: rails new, bundler, rake, rspec, rubocop. In Rust, one tool does nearly all of it. Cargo."
+ },
+ {
+  "key": "06dc3ebf",
+  "text": "Where you would type rails new, you type cargo new. It scaffolds a project and initializes a git repo."
+ },
+ {
+  "key": "04df34d0",
+  "text": "The result is tiny. A manifest file and a source folder with one file."
+ },
+ {
+  "key": "a21c9cbf",
+  "text": "Cargo dot toml plays the role of your Gemfile and gemspec combined."
+ },
+ {
+  "key": "1ba5ba36",
+  "text": "Main dot r s is the entry point. Execution starts at the function called main."
+ },
+ {
+  "key": "9bc1481f",
+  "text": "After the first build you also get Cargo dot lock, the equivalent of Gemfile dot lock, and a target folder for compiled output."
+ },
+ {
+  "key": "c7b39491",
+  "text": "Let us put a Gemfile next to a Cargo manifest."
+ },
+ {
+  "key": "5fed2512",
+  "text": "The package section describes your crate: its name, version, and the Rust edition, which is a bit like targeting a Ruby version."
+ },
+ {
+  "key": "2da3b79f",
+  "text": "Dependencies are your gems. Packages are called crates, and they live on crates dot io instead of rubygems."
+ },
+ {
+  "key": "9986cff0",
+  "text": "Features are a big deal in Rust. They switch optional parts of a crate on or off at compile time, so you only build what you use."
+ },
+ {
+  "key": "fe81e2a0",
+  "text": "And dev dependencies are your development and test group."
+ },
+ {
+  "key": "1ecd92c9",
+  "text": "Here are the commands you will type every day, next to their Ruby equivalents."
+ },
+ {
+  "key": "4a10e7f8",
+  "text": "cargo add adds a dependency, like bundle add. There is no separate install step, because Cargo fetches dependencies when it builds."
+ },
+ {
+  "key": "e2ef2a0e",
+  "text": "cargo run compiles and runs your program."
+ },
+ {
+  "key": "d7da0026",
+  "text": "cargo check is your new best friend. It type-checks without producing a binary, so it is much faster. Run it constantly."
+ },
+ {
+  "key": "f53803d8",
+  "text": "cargo test runs your tests. No extra gem needed."
+ },
+ {
+  "key": "1012b1f7",
+  "text": "cargo fmt formats your code, clippy lints it, and cargo doc builds browsable documentation for your project and every dependency."
+ },
+ {
+  "key": "fb921627",
+  "text": "There is one concept Ruby does not have: build profiles."
+ },
+ {
+  "key": "e829feaf",
+  "text": "By default you get a debug build. It compiles quickly but runs slower, with extra safety checks."
+ },
+ {
+  "key": "f7e22d83",
+  "text": "Pass dash dash release for an optimized build. Always benchmark and deploy in release mode. Debug builds can be ten times slower."
+ },
+ {
+  "key": "9a095535",
+  "text": "Checkpoint. Which command gives you the fastest feedback loop?"
+ },
+ {
+  "key": "3251ffe7",
+  "text": "As apps grow, Rails teams reach for engines or packwerk. Rust has workspaces."
+ },
+ {
+  "key": "ae17f83b",
+  "text": "A workspace groups several crates under one lockfile and one build folder."
+ },
+ {
+  "key": "9f674ec4",
+  "text": "You can test them all at once, or target a single package with dash p."
+ },
+ {
+  "key": "480284df",
+  "text": "Shared code goes in library crates with a lib dot r s, and executables have a main dot r s."
+ },
+ {
+  "key": "33b1a8ce",
+  "text": "cargo new scaffolds a project with Cargo.toml and src/main.rs."
+ },
+ {
+  "key": "01844fb7",
+  "text": "Cargo.toml ≈ Gemfile + gemspec, and Cargo.lock ≈ Gemfile.lock. Packages are crates on crates.io."
+ },
+ {
+  "key": "ff4227be",
+  "text": "Features toggle optional parts of a crate at compile time."
+ },
+ {
+  "key": "acdfe21f",
+  "text": "cargo check is the fastest feedback loop. cargo run, test, fmt, clippy and doc cover the rest."
+ },
+ {
+  "key": "c5cbdca1",
+  "text": "Debug builds are for development. Benchmark and deploy with --release."
+ },
+ {
+  "key": "c8a22a60",
+  "text": "In Ruby, any variable can be reassigned to anything at any time. Rust is stricter, and that turns out to be a feature."
+ },
+ {
+  "key": "d04006aa",
+  "text": "In Ruby, variables are mutable and untyped. You can even change a number into a string."
+ },
+ {
+  "key": "a402e67c",
+  "text": "In Rust, you declare variables with let, and they are immutable by default."
+ },
+ {
+  "key": "341ae4bf",
+  "text": "Try to reassign one, and the compiler stops you, and tells you exactly how to fix it."
+ },
+ {
+  "key": "e82ec7cd",
+  "text": "Add the mut keyword when you really mean to change a value. Mutation becomes visible and intentional."
+ },
+ {
+  "key": "98c75007",
+  "text": "But even a mutable variable keeps its type. Once total is an integer, it stays an integer."
+ },
+ {
+  "key": "9e73e03e",
+  "text": "Rust is statically typed, but you rarely write types for local variables. The compiler infers them."
+ },
+ {
+  "key": "1fc70733",
+  "text": "A string literal is a string slice. Whole numbers default to i32, and decimals to f64."
+ },
+ {
+  "key": "c289a3cc",
+  "text": "You can annotate types with a colon when you want to be specific, or when the compiler cannot work it out."
+ },
+ {
+  "key": "040e8bc5",
+  "text": "Numeric literals can take a type suffix, and underscores make big numbers readable, exactly like in Ruby."
+ },
+ {
+  "key": "bf435849",
+  "text": "Ruby has one Integer class that quietly grows as large as it needs. Rust makes you pick a size."
+ },
+ {
+  "key": "d865444a",
+  "text": "i32 is the default. i64 is what you want for database bigint ids, like Rails primary keys."
+ },
+ {
+  "key": "16d56377",
+  "text": "The u types are unsigned and cannot be negative. They are great for ports, bytes and counts."
+ },
+ {
+  "key": "e776359c",
+  "text": "usize is the type for indexes and lengths. You will see it everywhere with vectors."
+ },
+ {
+  "key": "2142f13c",
+  "text": "And f64 for floats. Just like in Rails, never store money in a float. Use integer cents or a decimal crate."
+ },
+ {
+  "key": "1ba82785",
+  "text": "Because sizes are fixed, overflow is possible. Debug builds panic on overflow, so you catch it during development."
+ },
+ {
+  "key": "27236570",
+  "text": "Here is a Rust idiom that surprises newcomers: shadowing."
+ },
+ {
+  "key": "5e59b5ac",
+  "text": "You can declare a new variable with the same name using let again. The new one shadows the old one."
+ },
+ {
+  "key": "c8406900",
+  "text": "Unlike mut, shadowing can change the type. Here a string becomes a sixty-four bit integer."
+ },
+ {
+  "key": "81fa9a4f",
+  "text": "It reads like a pipeline of transformations, much like you would clean up params in a Rails controller."
+ },
+ {
+  "key": "dd0d8fc0",
+  "text": "Inside functions, types are inferred. But function signatures always spell out their types."
+ },
+ {
+  "key": "1a89bd88",
+  "text": "Parameters are annotated with a colon, and the return type comes after an arrow."
+ },
+ {
+  "key": "bcea77f7",
+  "text": "format with an exclamation mark is a macro. It works like string interpolation."
+ },
+ {
+  "key": "7367b7f8",
+  "text": "Good news for Rubyists: the last expression is the return value, just like Ruby. No return keyword needed."
+ },
+ {
+  "key": "35c74b02",
+  "text": "One catch: a trailing semicolon turns an expression into a statement. A classic beginner error."
+ },
+ {
+  "key": "c7ca6ad1",
+  "text": "Checkpoint! Read carefully: shadowing, mutation, or neither?"
+ },
+ {
+  "key": "e96fb8ce",
+  "text": "Ruby constants are not really constant. Reassigning one only gives you a warning."
+ },
+ {
+  "key": "2cd61ed1",
+  "text": "Rust constants use const, are SCREAMING snake case like Ruby, and must always have a type annotation."
+ },
+ {
+  "key": "47af9d0d",
+  "text": "They are evaluated at compile time and can never change. Constant really means constant."
+ },
+ {
+  "key": "99f00591",
+  "text": "let bindings are immutable. let mut lets you change them, but never their type."
+ },
+ {
+  "key": "96221bfa",
+  "text": "Local types are inferred. Function parameters and return types are always written out."
+ },
+ {
+  "key": "43219f0d",
+  "text": "Integers have fixed sizes: i32 is the default, i64 for DB ids, usize for indexes."
+ },
+ {
+  "key": "30ce6f35",
+  "text": "Shadowing (let x = ... again) creates a new variable and can change its type."
+ },
+ {
+  "key": "4655daf7",
+  "text": "The last expression without a ; is the return value, as in Ruby."
+ },
+ {
+  "key": "81ee96f7",
+  "text": "Welcome to Module 2. This is the idea that makes Rust Rust: ownership."
+ },
+ {
+  "key": "63edf679",
+  "text": "It replaces the garbage collector you have relied on in Ruby for your whole career. Take it slowly, it is worth it."
+ },
+ {
+  "key": "a7525a86",
+  "text": "Every program has to answer one question: when is it safe to free a piece of memory?"
+ },
+ {
+  "key": "20e0492f",
+  "text": "Ruby answers it at runtime. The garbage collector periodically scans for objects nobody references and frees them. You never think about it, but you pay for it in pauses and memory."
+ },
+ {
+  "key": "5a03e6d2",
+  "text": "Rust answers it at compile time. Each value has exactly one owner, and the moment that owner goes out of scope, the memory is freed."
+ },
+ {
+  "key": "2b57263f",
+  "text": "No collector, no pauses, and nothing extra to do at runtime. The bookkeeping lives in the compiler."
+ },
+ {
+  "key": "dcd735df",
+  "text": "Ownership boils down to three rules."
+ },
+ {
+  "key": "0b91e400",
+  "text": "One. Each value has an owner, the variable that holds it."
+ },
+ {
+  "key": "69e6fa8e",
+  "text": "Two. There can only be one owner at a time. Not two, not a shared bunch. One."
+ },
+ {
+  "key": "ca906d94",
+  "text": "Three. When the owner goes out of scope, the value is dropped, which means its memory is freed immediately."
+ },
+ {
+  "key": "df27f580",
+  "text": "Every borrow checker error you will meet in this module comes back to these three rules."
+ },
+ {
+  "key": "bc8ccdfa",
+  "text": "To understand ownership you need a quick picture of where values live."
+ },
+ {
+  "key": "72fa59d6",
+  "text": "Simple, fixed size values like a u32 live on the stack. They are cheap to create and copy."
+ },
+ {
+  "key": "a63dd0e9",
+  "text": "A String can grow, so its characters live on the heap. The stack only holds a small header: a pointer, a length and a capacity."
+ },
+ {
+  "key": "51124865",
+  "text": "When main ends, both owners go out of scope. Rust frees the stack slot and the heap buffer immediately, with no collector involved."
+ },
+ {
+  "key": "fc81814e",
+  "text": "Here is where Rust really departs from Ruby. We create a String called s1. It owns a heap buffer containing hello."
+ },
+ {
+  "key": "57f4f89b",
+  "text": "Now we assign s1 to s2. In Ruby, both variables would point to the same object. Rust copies only the small header, so s2 points at the same buffer."
+ },
+ {
+  "key": "288e335f",
+  "text": "But two owners of one buffer would break rule two, and the buffer would be freed twice. So Rust moves ownership. s1 is now invalid."
+ },
+ {
+  "key": "587b5d86",
+  "text": "Use s1 after the move and the compiler refuses. Borrow of moved value. You will see this error a lot, and now you know exactly what it means."
+ },
+ {
+  "key": "deda93a9",
+  "text": "Not everything moves. Small, fixed size types like integers implement the Copy trait."
+ },
+ {
+  "key": "0c4b70a2",
+  "text": "Assigning a Copy value duplicates the bits, so both a and b stay valid. That is why numbers feel just like Ruby."
+ },
+ {
+  "key": "9e1e0ec3",
+  "text": "Anything that owns heap memory, like String, Vec or HashMap, moves instead."
+ },
+ {
+  "key": "54ab7184",
+  "text": "When you really want two independent copies, call clone. It is a deep copy of the data, a bit like dup in Ruby, but explicit and visible in the code."
+ },
+ {
+  "key": "005adaff",
+  "text": "Checkpoint. A vector is assigned to a new variable. Then we use the old one. What happens?"
+ },
+ {
+  "key": "508740e6",
+  "text": "Calling a function works exactly like assignment. Passing a String moves it into the function parameter."
+ },
+ {
+  "key": "610040ad",
+  "text": "The parameter becomes the new owner, so the string is dropped when the function returns."
+ },
+ {
+  "key": "e82008dc",
+  "text": "So calling send welcome a second time fails. Email was already moved away on the first call."
+ },
+ {
+  "key": "0c645b59",
+  "text": "You have three options. Pass a clone."
+ },
+ {
+  "key": "d6f48b21",
+  "text": "Return the value back to the caller, which works but gets clumsy fast."
+ },
+ {
+  "key": "5bcbb508",
+  "text": "Or, the real answer: let the function borrow the value instead of owning it. That is our next lesson."
+ },
+ {
+  "key": "fdab8fab",
+  "text": "Rubyists already know a version of this. File open with a block guarantees the file is closed when the block ends."
+ },
+ {
+  "key": "518f3220",
+  "text": "But plain objects are freed whenever the garbage collector gets around to it. You cannot know when."
+ },
+ {
+  "key": "b7de33b8",
+  "text": "In Rust, every scope behaves like that file block. When f goes out of scope, it is dropped and the file is closed right there."
+ },
+ {
+  "key": "a443238a",
+  "text": "The same applies to everything: memory, sockets, database connections, mutex locks. Cleanup is deterministic."
+ },
+ {
+  "key": "e58c0f58",
+  "text": "Each value has one owner at a time, and it is dropped when that owner goes out of scope."
+ },
+ {
+  "key": "cd9724f7",
+  "text": "Assignment and function calls move heap-owning values like String and Vec. Using the old variable is error E0382."
+ },
+ {
+  "key": "67db43cb",
+  "text": "Integers, floats, bool, char and shared refs are Copy, so they are duplicated instead of moved."
+ },
+ {
+  "key": "0121aa6e",
+  "text": ".clone() makes an explicit deep copy. It is fine while learning."
+ },
+ {
+  "key": "c72a7bb0",
+  "text": "Dropping is deterministic, like a File.open block that always closes."
+ },
+ {
+  "key": "54bb2310",
+  "text": "Moving values everywhere would be exhausting. Most of the time, a function just wants to look at something, or tweak it, and give it back."
+ },
+ {
+  "key": "1f87d05d",
+  "text": "That is borrowing. It is the most important everyday skill in Rust."
+ },
+ {
+  "key": "9b9e36f7",
+  "text": "Ruby passes object references everywhere. Any method that receives your hash can change it."
+ },
+ {
+  "key": "6f19ee39",
+  "text": "So a harmless looking service object can quietly mutate the caller's params. We have all debugged this one."
+ },
+ {
+  "key": "e8b05228",
+  "text": "In Rust, the function signature tells you. Ampersand mut means this function may change your value."
+ },
+ {
+  "key": "3b1f4672",
+  "text": "A plain ampersand means read only, and the compiler guarantees it. Mutation becomes part of the contract."
+ },
+ {
+  "key": "246069df",
+  "text": "Instead of handing over ownership, we can lend a reference. The function takes an ampersand String."
+ },
+ {
+  "key": "04d31e41",
+  "text": "Post is the owner of the heap buffer."
+ },
+ {
+  "key": "4501f9d1",
+  "text": "We call word count with ampersand post. That creates a reference: a pointer to post that does not own anything."
+ },
+ {
+  "key": "f66d4906",
+  "text": "When the function returns, the borrow ends and the reference itself goes away. The String is not dropped, because the reference never owned it."
+ },
+ {
+  "key": "07eab4b8",
+  "text": "So post is still ours, and we can keep using it. No clone needed."
+ },
+ {
+  "key": "87bc57e7",
+  "text": "When a function needs to change something, it asks for a mutable borrow: ampersand mut."
+ },
+ {
+  "key": "1ea8e14a",
+  "text": "The caller has to opt in twice. The variable must be declared mut, and the call site writes ampersand mut explicitly."
+ },
+ {
+  "key": "d1168fe6",
+  "text": "Reading the code, you can see every place that might change tags. Compare that to hunting for bang methods in Ruby."
+ },
+ {
+  "key": "7d5d6ffc",
+  "text": "All of borrowing comes down to these rules."
+ },
+ {
+  "key": "812e8b83",
+  "text": "At any moment, you can have as many shared, read only references as you like."
+ },
+ {
+  "key": "c44c6f99",
+  "text": "Or you can have exactly one mutable reference, with no readers at the same time. Never both."
+ },
+ {
+  "key": "edf4947e",
+  "text": "And a reference must never outlive the value it points to."
+ },
+ {
+  "key": "c0234f1d",
+  "text": "If you have used a database read write lock, this is the same idea. The compiler checks it, so it costs nothing at runtime and data races cannot happen."
+ },
+ {
+  "key": "27d276bc",
+  "text": "Here is the classic borrow checker error. A vector, and a reference to its first element."
+ },
+ {
+  "key": "8956f3f4",
+  "text": "Then we push. But pushing may need more room, so the vector can reallocate: copy everything into a new, bigger buffer, and free the old one."
+ },
+ {
+  "key": "3e924fd7",
+  "text": "Now first points into freed memory. In C that is a use after free bug. A security hole."
+ },
+ {
+  "key": "119a4a69",
+  "text": "Rust refuses to compile it. You cannot mutate v while a shared borrow of it is still in use."
+ },
+ {
+  "key": "4445a781",
+  "text": "There are two common fixes."
+ },
+ {
+  "key": "b5e64002",
+  "text": "One. Copy the value out instead of borrowing it. An i32 is Copy, so no reference stays alive."
+ },
+ {
+  "key": "ba5406be",
+  "text": "Two. Reorder your code. A borrow lasts only until its last use, not until the end of the block."
+ },
+ {
+  "key": "e8ea04a5",
+  "text": "So by the time we push five, nobody is looking at the vector anymore, and the compiler is happy."
+ },
+ {
+  "key": "5eeda8f7",
+  "text": "Checkpoint. Two mutable borrows of the same string. Will the compiler allow it?"
+ },
+ {
+  "key": "43cf6d20",
+  "text": "One more kind of borrow: slices. A string slice, ampersand str, borrows some or all of a string."
+ },
+ {
+  "key": "e12a2045",
+  "text": "The returned word is not a new string. It points right into the original text. No copying."
+ },
+ {
+  "key": "a7c62665",
+  "text": "Array slices work the same way for vectors."
+ },
+ {
+  "key": "82a8a407",
+  "text": "A reference to a String converts to a string slice automatically, and a reference to a Vec converts to a slice."
+ },
+ {
+  "key": "8574a479",
+  "text": "So the idiom is to accept ampersand str and slices in your functions. They work with more inputs, including string literals."
+ },
+ {
+  "key": "c8dd4f4c",
+  "text": "ref value lends a read-only reference. The owner keeps ownership and can use the value afterwards."
+ },
+ {
+  "key": "da34c58a",
+  "text": "ref mut value lends exclusive write access. It needs let mut on the owner."
+ },
+ {
+  "key": "42e2ba81",
+  "text": "Rule: many ref T or one ref mut T at a time. That is a compile-time read/write lock, so there are no data races."
+ },
+ {
+  "key": "cc7edcf7",
+  "text": "A borrow lasts until its last use. Reordering code fixes most borrow errors."
+ },
+ {
+  "key": "d26504c0",
+  "text": "Slices (ref str, and [T]) borrow part of a collection. Prefer them as parameter types."
+ },
+ {
+  "key": "9d6db78c",
+  "text": "Two final pieces of the ownership puzzle. Lifetimes, which keep references honest."
+ },
+ {
+  "key": "5214ffc6",
+  "text": "And smart pointers like Rc and RefCell, which bring back some of the flexible sharing you are used to in Ruby."
+ },
+ {
+  "key": "8720c235",
+  "text": "Here is the bug. r is declared outside a block, and inside the block it borrows x."
+ },
+ {
+  "key": "5951a9ae",
+  "text": "But x is dropped at the closing brace. After that, r would point at freed memory."
+ },
+ {
+  "key": "16232c12",
+  "text": "In Ruby this cannot happen. The garbage collector keeps x alive as long as anyone references it."
+ },
+ {
+  "key": "a285000b",
+  "text": "Rust has no collector, so the compiler must prove that every reference stays within the lifetime of its data."
+ },
+ {
+  "key": "78359bad",
+  "text": "Here it cannot. Error, x does not live long enough. The span where a reference is valid is called its lifetime."
+ },
+ {
+  "key": "46765ebf",
+  "text": "Usually the compiler figures lifetimes out by itself. But look at this function. It returns one of two references."
+ },
+ {
+  "key": "89771acc",
+  "text": "Which input does the result borrow from? The compiler cannot tell from the signature alone, so we annotate it."
+ },
+ {
+  "key": "0b164140",
+  "text": "Tick a is a lifetime parameter. It is a name for some region of code, declared in angle brackets like a generic."
+ },
+ {
+  "key": "6f2e1be6",
+  "text": "Using it on both inputs and the output says the result is valid only as long as both inputs are."
+ },
+ {
+  "key": "e1fdf90a",
+  "text": "Important: annotations do not change how long anything lives. They only describe relationships so the compiler can check them."
+ },
+ {
+  "key": "ea9f4945",
+  "text": "Good news. Thanks to lifetime elision rules, you rarely write annotations at all."
+ },
+ {
+  "key": "8cf1ab4c",
+  "text": "If a function takes a single reference and returns one, the output obviously borrows from that input."
+ },
+ {
+  "key": "d22dc318",
+  "text": "For methods, a returned reference is assumed to borrow from self. That covers getters."
+ },
+ {
+  "key": "54d6ad4c",
+  "text": "If no reference is returned, there is nothing to relate."
+ },
+ {
+  "key": "b2deb6e7",
+  "text": "Only when it is truly ambiguous do you need to annotate, and the compiler error will point it out for you."
+ },
+ {
+  "key": "a349de58",
+  "text": "Lifetimes show up most in structs. The easy path is a struct that owns its data, with String fields instead of string slices."
+ },
+ {
+  "key": "79733f26",
+  "text": "A struct can hold references, but then it needs a lifetime parameter, and the struct can never outlive the data it borrows from."
+ },
+ {
+  "key": "249ce375",
+  "text": "The advice for app developers: own your data. Treat your structs like ActiveRecord models that own their attributes, and reach for borrowing structs only when profiling tells you to."
+ },
+ {
+  "key": "db5d7cc3",
+  "text": "Sometimes the single owner rule is too strict. Think of a config object that many parts of the app share. Rust has smart pointers for this."
+ },
+ {
+  "key": "96e8eb97",
+  "text": "Box puts a single value on the heap. It still has one owner, and it is handy for recursive types and trait objects."
+ },
+ {
+  "key": "d3a74180",
+  "text": "Rc means reference counted. Many owners share one value, and it is freed when the last owner goes away."
+ },
+ {
+  "key": "2eb75c11",
+  "text": "Arc is the atomic version of Rc, safe to share across threads. You will use it constantly in async web servers."
+ },
+ {
+  "key": "69ce9dd8",
+  "text": "RefCell lets you mutate through a shared reference. The borrow rules are checked at runtime instead of compile time. Mutex does the same across threads."
+ },
+ {
+  "key": "cdd6b0dd",
+  "text": "Rc new puts the config on the heap, next to a counter of how many owners it has. Right now, one."
+ },
+ {
+  "key": "f4ab4dc9",
+  "text": "Rc clone does not copy the config. It copies the pointer and bumps the count. Two owners."
+ },
+ {
+  "key": "f9c267f6",
+  "text": "And a third."
+ },
+ {
+  "key": "b5317bad",
+  "text": "Dropping an owner decrements the count. When it reaches zero, the config itself is freed. Like a tiny, predictable garbage collector for just this value."
+ },
+ {
+  "key": "d3f4ec46",
+  "text": "Rc gives you many owners, but only shared, read only access. To mutate shared data, wrap it in a RefCell."
+ },
+ {
+  "key": "ec5e74ae",
+  "text": "borrow mut hands out a mutable borrow at runtime. If one is already active, the program panics instead of failing to compile."
+ },
+ {
+  "key": "1d8d8c19",
+  "text": "Put together, this is basically how every Ruby object works: shared by many references, mutable by anyone, and cleaned up automatically."
+ },
+ {
+  "key": "b358caae",
+  "text": "Rust makes you ask for that flexibility explicitly, so you only pay for it where you need it."
+ },
+ {
+  "key": "f96ad2c0",
+  "text": "Checkpoint. Shared config, many threads. Which smart pointer?"
+ },
+ {
+  "key": "7ac3463e",
+  "text": "Lifetimes stop dangling references. A reference can never outlive the value it borrows."
+ },
+ {
+  "key": "d9272d69",
+  "text": "'a describes how inputs and outputs relate. Elision means you rarely write it."
+ },
+ {
+  "key": "76040411",
+  "text": "Prefer structs that own their data (String, not ref str)."
+ },
+ {
+  "key": "aab218f4",
+  "text": "Rc/Arc give shared ownership by reference counting, and Arc works across threads."
+ },
+ {
+  "key": "b6c6b384",
+  "text": "RefCell/Mutex allow mutation through shared refs. Rc RefCell T is basically a Ruby object."
+ },
+ {
+  "key": "e686b8fb",
+  "text": "In Ruby, everything is an object and everything has a class. Rust has no classes at all."
+ },
+ {
+  "key": "6528a326",
+  "text": "Instead it splits a class into two pieces: a struct for the data, and an impl block for the behavior."
+ },
+ {
+  "key": "15bdf663",
+  "text": "Here is a plain old Ruby object. Instance variables appear the first time initialize assigns them."
+ },
+ {
+  "key": "b6d5fcd4",
+  "text": "In Rust, the fields are declared up front, each with a type. This is a struct. It is pure data, with no methods yet."
+ },
+ {
+  "key": "b238d870",
+  "text": "You build one with a struct literal. Every field must be given a value. Rust has no implicit nil defaults."
+ },
+ {
+  "key": "f96f962b",
+  "text": "Notice there are no attribute readers. Visibility is decided per field, which we will get to in a minute."
+ },
+ {
+  "key": "cdfcbe86",
+  "text": "Behavior goes in an impl block for the type. You can have several impl blocks, even in different files."
+ },
+ {
+  "key": "bf01601b",
+  "text": "A function without self is an associated function, like a Ruby class method. By convention, new is the constructor. Rust has no special initialize."
+ },
+ {
+  "key": "9f640d1d",
+  "text": "Methods take self as the first parameter, and how they take it matters. Ampersand self borrows the value read-only."
+ },
+ {
+  "key": "2631d6b4",
+  "text": "Ampersand mut self borrows it mutably, so the method can change fields. The caller must have a mutable variable."
+ },
+ {
+  "key": "27582e58",
+  "text": "And plain self takes ownership. The value is consumed, and the caller cannot use it afterwards."
+ },
+ {
+  "key": "428be456",
+  "text": "Let us line those up. Ampersand self is a reader: it looks but never touches."
+ },
+ {
+  "key": "c603a91f",
+  "text": "Ampersand mut self is for methods that change state. In Ruby you might mark these with a bang."
+ },
+ {
+  "key": "4cf72140",
+  "text": "Plain self consumes the value. Ruby has no real equivalent, because the garbage collector keeps everything alive."
+ },
+ {
+  "key": "4b89d535",
+  "text": "And a function with no self is a class method, called with two colons."
+ },
+ {
+  "key": "fbd83d7a",
+  "text": "Calling methods looks just like Ruby, with a dot. Rust borrows automatically when you call them."
+ },
+ {
+  "key": "2b834916",
+  "text": "Every Ruby object gets inspect, dup and double-equals for free. A Rust struct starts with none of them."
+ },
+ {
+  "key": "b1dd6a3f",
+  "text": "You opt in with the derive attribute. The compiler writes the implementation for you."
+ },
+ {
+  "key": "8dd29185",
+  "text": "Debug is inspect. It lets you print the struct with colon question mark."
+ },
+ {
+  "key": "63252402",
+  "text": "Clone is dup. Copies are always explicit with dot clone, so you can see where they happen."
+ },
+ {
+  "key": "a7b8aa10",
+  "text": "PartialEq gives you double equals comparing every field. Default builds an instance with zero values."
+ },
+ {
+  "key": "a2432b91",
+  "text": "Rails leans on inheritance. Your model is an ApplicationRecord, and maybe Admin inherits from User."
+ },
+ {
+  "key": "3f759a41",
+  "text": "Single table inheritance stacks up another layer."
+ },
+ {
+  "key": "de4e54f5",
+  "text": "Rust structs cannot inherit from anything. Instead you compose: a struct holds other structs as fields."
+ },
+ {
+  "key": "d82710ff",
+  "text": "Shared behavior comes from traits, which we cover in lesson three. Think \"has a\" and \"can do\", never \"is a\"."
+ },
+ {
+  "key": "5621c1d0",
+  "text": "Checkpoint. Which flavor of self lets you mutate while the caller keeps the value?"
+ },
+ {
+  "key": "4019a007",
+  "text": "In Ruby everything is public unless you write private. Rust flips that. Everything is private unless marked pub."
+ },
+ {
+  "key": "a90e1e12",
+  "text": "That includes fields. A private field can only be touched by code in the same module. Outside it, you cannot read the field, or even build the struct with a literal. You go through a pub constructor like new, so your invariants stay safe."
+ },
+ {
+  "key": "f16221ae",
+  "text": "Methods are the same. A pub fn is your public API, and the rest are private helpers."
+ },
+ {
+  "key": "893e5e92",
+  "text": "There is no Zeitwerk autoloading. You declare the module tree with mod, and bring names into scope with use, a bit like require."
+ },
+ {
+  "key": "78bc9d4c",
+  "text": "Private by default, and explicit about where code lives. Refactors get much safer."
+ },
+ {
+  "key": "2e240309",
+  "text": "struct declares typed fields up front, and every field must be set when you build one."
+ },
+ {
+  "key": "4fb68fe8",
+  "text": "impl Type { ... } holds methods. Functions without self are associated functions, like class methods: User new(..)."
+ },
+ {
+  "key": "c9f1f52c",
+  "text": "ref self reads, ref mut self modifies, and self consumes the value."
+ },
+ {
+  "key": "9ebf9527",
+  "text": "#[derive(Debug, Clone, PartialEq, Default)] gives you inspect, dup, == and defaults."
+ },
+ {
+  "key": "ece9a9eb",
+  "text": "No inheritance: compose structs, and share behavior with traits."
+ },
+ {
+  "key": "f65ad04e",
+  "text": "Items and fields are private unless marked pub. Modules are declared with mod and imported with use."
+ },
+ {
+  "key": "903193cd",
+  "text": "If you only remember one Rust feature from this course, make it this one. Enums plus match."
+ },
+ {
+  "key": "7b8943d5",
+  "text": "They replace Rails enums, state machines, case when, and nil, all with one idea."
+ },
+ {
+  "key": "6d0e8ade",
+  "text": "A Rails enum maps names to integers in the database. Ask for the status and you get back a string."
+ },
+ {
+  "key": "01ce645c",
+  "text": "A Rust enum is a type that is exactly one of a fixed set of variants."
+ },
+ {
+  "key": "4f87b3e8",
+  "text": "A typo like Status colon colon Payed is a compile error, not a silent nil or an ArgumentError at runtime."
+ },
+ {
+  "key": "88814655",
+  "text": "Here is where Rust enums leave Rails enums behind. Each variant can carry its own data."
+ },
+ {
+  "key": "6d690b8a",
+  "text": "A card payment has the last four digits and a brand. Cash has nothing."
+ },
+ {
+  "key": "176211e5",
+  "text": "Variants can hold unnamed fields like a tuple, or named fields like a struct."
+ },
+ {
+  "key": "91390f2e",
+  "text": "In Rails you might reach for single table inheritance, with half the columns null for each type. Here an invalid combination is impossible to build."
+ },
+ {
+  "key": "3ce18809",
+  "text": "Ruby's case when quietly returns nil when nothing matches. Forget a branch and you will not know until production."
+ },
+ {
+  "key": "3a3f1f4e",
+  "text": "Rust's match is an expression too, so it returns a value. Each arm is a pattern, a fat arrow, and an expression."
+ },
+ {
+  "key": "664c5964",
+  "text": "Patterns destructure. This arm pulls last four out of the card, and dot dot ignores the other fields."
+ },
+ {
+  "key": "8fb69302",
+  "text": "The big one: match must be exhaustive. Leave out a variant and the code does not compile."
+ },
+ {
+  "key": "586234b2",
+  "text": "Here is why teams fall in love with this. Product asks for a new order state: refunded."
+ },
+ {
+  "key": "8090ea5a",
+  "text": "You add the variant and run cargo check. Every match on Status that does not handle refunded is now an error, with its file and line."
+ },
+ {
+  "key": "874d5b0c",
+  "text": "For a state machine, that is gold. You cannot ship a half-handled new state."
+ },
+ {
+  "key": "d38a21d8",
+  "text": "Remember Option from lesson one? It is not magic. It is a plain enum with two variants: Some holding a value, or None."
+ },
+ {
+  "key": "0bc83c79",
+  "text": "Because Option of User is a different type from User, you cannot accidentally call a user method on a maybe-missing value."
+ },
+ {
+  "key": "e0903dac",
+  "text": "You open it with match, handling both cases explicitly."
+ },
+ {
+  "key": "d6ecafdd",
+  "text": "When you only care about one case, if let is the short form. It reads like Ruby's if user equals find by."
+ },
+ {
+  "key": "d4bda59e",
+  "text": "You will rarely write a full match on an Option. There is a method for almost every Ruby idiom you know."
+ },
+ {
+  "key": "e2ee0f4d",
+  "text": "The safe navigation operator becomes map. Fallbacks with a double pipe become unwrap or."
+ },
+ {
+  "key": "0462daeb",
+  "text": "present question mark becomes is some. find by bang, which raises, becomes expect. That panics with your message."
+ },
+ {
+  "key": "80178732",
+  "text": "The guard clause, return unless user, becomes let else. It binds the value or leaves the function."
+ },
+ {
+  "key": "c3620ed4",
+  "text": "And inside a function that returns an Option, the question mark operator chains lookups like a safe navigation chain."
+ },
+ {
+  "key": "de6d66c2",
+  "text": "Checkpoint. Follow the None through the chain."
+ },
+ {
+  "key": "4a57ba62",
+  "text": "Patterns are much richer than case when. You can match on a tuple of values at once."
+ },
+ {
+  "key": "c00a874d",
+  "text": "Ranges match numbers, and string literals match strings."
+ },
+ {
+  "key": "feca06e1",
+  "text": "An if after a pattern is a guard, an extra condition for that arm. A vertical bar means or."
+ },
+ {
+  "key": "f1e789b2",
+  "text": "Underscore catches everything else. Arms are checked top to bottom, like when clauses."
+ },
+ {
+  "key": "0cf12f75",
+  "text": "And when you just need a yes or no, the matches macro returns a boolean. It is perfect for predicates like can cancel."
+ },
+ {
+  "key": "5ffa4ee9",
+  "text": "An enum value is exactly one of its variants, and variants can carry tuple or struct-like data."
+ },
+ {
+  "key": "e977d9dd",
+  "text": "match is an expression, destructures patterns, and is checked for exhaustiveness."
+ },
+ {
+  "key": "ee71d2db",
+  "text": "Adding a variant turns every unhandled match into a compile error, which is ideal for state machines."
+ },
+ {
+  "key": "03083d66",
+  "text": "Option T = Some(T) | None. Use if let, let ... else, map, unwrap_or and ?."
+ },
+ {
+  "key": "f589aa86",
+  "text": "Patterns support tuples, ranges, |, guards (if), .. and _. matches! returns a bool."
+ },
+ {
+  "key": "c56875a5",
+  "text": "Ruby runs on duck typing. If it responds to the method, it is good enough. You find out it does not at runtime."
+ },
+ {
+  "key": "262d6c97",
+  "text": "Rust keeps that flexibility with traits, and checks every duck at compile time."
+ },
+ {
+  "key": "3da3af83",
+  "text": "In Ruby, two unrelated classes can both have a deliver method. Code that calls deliver works with either, until someone passes an object without it."
+ },
+ {
+  "key": "a342eb87",
+  "text": "In Rust you write the contract down. A trait lists the method signatures a type must provide."
+ },
+ {
+  "key": "d88f651e",
+  "text": "Then each type opts in with impl Notifier for Email, and the compiler checks it supplies every required method."
+ },
+ {
+  "key": "c862d429",
+  "text": "Ruby modules give you mixins. Sluggable quietly assumes that whoever includes it has a title method."
+ },
+ {
+  "key": "2e7389e5",
+  "text": "A Rust trait can do the same with a default method, and the assumption becomes explicit. Title is a required method."
+ },
+ {
+  "key": "a8fdf56e",
+  "text": "Slug has a body, so every implementor gets it for free, just like include."
+ },
+ {
+  "key": "c58c82ef",
+  "text": "Post only implements title, and it gets slug automatically. Forget title, and it is a compile error, not a NoMethodError."
+ },
+ {
+  "key": "c47ec6a6",
+  "text": "Now write a function that works with any notifier. That is a generic, with a trait bound."
+ },
+ {
+  "key": "eefecc15",
+  "text": "T colon Notifier reads as \"any type T that implements Notifier\". Ruby's implicit \"responds to deliver\" is now explicit."
+ },
+ {
+  "key": "98a7cd4b",
+  "text": "impl Notifier in argument position is shorthand for the same thing."
+ },
+ {
+  "key": "cfab7537",
+  "text": "Combine bounds with a plus, and move them into a where clause when they get long."
+ },
+ {
+  "key": "33d6c647",
+  "text": "Pass in something that does not quack, and the compiler names the missing trait."
+ },
+ {
+  "key": "ce42df5d",
+  "text": "Generics fix one concrete type at compile time. But sometimes you want a list of different types, like a Ruby array of notifiers."
+ },
+ {
+  "key": "3621e67c",
+  "text": "For that, use dyn Notifier: a trait object. Each value is boxed on the heap, because they have different sizes."
+ },
+ {
+  "key": "dde9b73e",
+  "text": "Calls are dispatched at runtime through a lookup table. This is the closest thing to Ruby's dynamic dispatch, and it is still type-checked."
+ },
+ {
+  "key": "fcbcfc6d",
+  "text": "Rule of thumb: use generics by default, and reach for dyn when you need a mixed collection or a plugin point."
+ },
+ {
+  "key": "a65ee101",
+  "text": "Checkpoint. One vector, different notifier types. What goes inside?"
+ },
+ {
+  "key": "7f545d23",
+  "text": "Much of Ruby's object protocol maps onto standard traits."
+ },
+ {
+  "key": "be363b4c",
+  "text": "Display is to s. Implement it, and your type works with curly braces in format strings."
+ },
+ {
+  "key": "27b1ae3c",
+  "text": "From and Into are conversions. Implement From, and you get into for free in the other direction."
+ },
+ {
+  "key": "b61bdf9e",
+  "text": "Debug is inspect. PartialEq and Ord are double equals and the spaceship operator, like Comparable."
+ },
+ {
+  "key": "5b6b648e",
+  "text": "Hash and Eq let a type be a hash map key. And Serialize from serde is your as json."
+ },
+ {
+  "key": "385f5023",
+  "text": "Let us implement two of these for a Money type."
+ },
+ {
+  "key": "265618e3",
+  "text": "Display has one method, fmt. You write into a formatter, the same way you would build a string in to s."
+ },
+ {
+  "key": "2afdcee0",
+  "text": "From i64 says how to build Money from a plain integer of cents."
+ },
+ {
+  "key": "bcf49532",
+  "text": "Now we can call into on an integer, and print Money directly with curly braces."
+ },
+ {
+  "key": "9d65457e",
+  "text": "Finally, the trait you will derive more than any other: serde's Serialize and Deserialize."
+ },
+ {
+  "key": "1e956f19",
+  "text": "Derive them on a struct, and serde generates the JSON code at compile time. No reflection, and very fast."
+ },
+ {
+  "key": "0ba5b081",
+  "text": "Attributes customize the output, like renaming a field to camel case."
+ },
+ {
+  "key": "199abfe9",
+  "text": "Parsing is typed. If the JSON has the wrong shape, you get an error instead of a hash with surprise nils."
+ },
+ {
+  "key": "ea1eb134",
+  "text": "A trait declares methods a type must provide. impl Trait for Type opts the type in, and the compiler checks it."
+ },
+ {
+  "key": "890b8513",
+  "text": "Default methods in a trait behave like a Ruby module mixed in with include."
+ },
+ {
+  "key": "a20a1911",
+  "text": "Generics with trait bounds (fn f T: Notifier , impl Notifier) are compiled per type, with no runtime cost."
+ },
+ {
+  "key": "a92d1289",
+  "text": "Box dyn Trait enables heterogeneous collections with runtime dispatch."
+ },
+ {
+  "key": "2530ad61",
+  "text": "Implement Display for {}/to_string(), and From to get .into(). Derive Serialize/Deserialize for JSON."
+ },
+ {
+  "key": "d8d633e1",
+  "text": "In Ruby, anything can raise, and you find out by reading the docs or by getting paged."
+ },
+ {
+  "key": "1c023ac0",
+  "text": "Rust has no exceptions. A function that can fail says so in its signature, and the compiler makes sure you deal with it."
+ },
+ {
+  "key": "83945af6",
+  "text": "Here is a familiar Ruby pattern. Integer raises on bad input, so we rescue it and return nil."
+ },
+ {
+  "key": "f52d56e3",
+  "text": "Nothing in the method signature warns callers that it can fail. You have to read the body to know."
+ },
+ {
+  "key": "d0a77e73",
+  "text": "In Rust, the return type says it out loud. This returns a Result: either a u8 age, or a ParseIntError."
+ },
+ {
+  "key": "ca4516e2",
+  "text": "Callers handle both cases with match. Ok carries the value, Err carries the error. Forget a branch and it will not compile."
+ },
+ {
+  "key": "1cf8e35b",
+  "text": "There is no magic here. Result is an ordinary enum from the standard library, with two variants."
+ },
+ {
+  "key": "482f372b",
+  "text": "Ok wraps the success value."
+ },
+ {
+  "key": "89b497da",
+  "text": "Err wraps the failure. It is just data you return. Nothing is thrown and the stack does not unwind."
+ },
+ {
+  "key": "cad4342d",
+  "text": "Because it lives in the type, every caller can see exactly how a function can fail. It is documentation the compiler enforces."
+ },
+ {
+  "key": "cd60dd0c",
+  "text": "Matching every Result by hand gets noisy fast. Look at this: four lines just to say \"if it failed, pass the error up\"."
+ },
+ {
+  "key": "865514df",
+  "text": "The question mark operator does exactly that in one character."
+ },
+ {
+  "key": "09c97302",
+  "text": "If the Result is Ok, question mark unwraps the value and carries on. If it is Err, it returns that error from the current function immediately."
+ },
+ {
+  "key": "b8341d8a",
+  "text": "So question mark only works inside a function that itself returns a Result. You get the ergonomics of exceptions, with every exit point marked."
+ },
+ {
+  "key": "e6ed9376",
+  "text": "Checkpoint. The question mark is right there. So why does the compiler complain?"
+ },
+ {
+  "key": "c733556d",
+  "text": "Sometimes you know a failure is a bug, not a situation to handle. Rails has bang methods for that, and Rust has unwrap and expect."
+ },
+ {
+  "key": "ab36daec",
+  "text": "unwrap takes the Ok value or panics. expect does the same, with a message you choose. It is like save with a bang."
+ },
+ {
+  "key": "74912a60",
+  "text": "When failure is a normal outcome, like find_by, use question mark or match instead. And unwrap_or is your double pipe default."
+ },
+ {
+  "key": "015218a0",
+  "text": "Reading config at boot is a fine place to expect. If the port is garbage, crash loudly before taking traffic."
+ },
+ {
+  "key": "59d1a101",
+  "text": "But inside a request, never unwrap user input. One bad parameter would panic the handler. Propagate the error instead."
+ },
+ {
+  "key": "47b33eaa",
+  "text": "In Ruby you model failure kinds with a hierarchy of exception classes, and rescue them one by one."
+ },
+ {
+  "key": "ffd50eea",
+  "text": "In Rust, the idiomatic version is one enum, with a variant per failure."
+ },
+ {
+  "key": "e3d1511b",
+  "text": "Variants can carry data, like the minimum password length, or a lower-level error that caused this one."
+ },
+ {
+  "key": "e66438c3",
+  "text": "Implementing From lets question mark convert automatically. An io Error hit inside signup becomes a SignupError on the way out."
+ },
+ {
+  "key": "0cfe731d",
+  "text": "And because it is an enum, a match over SignupError must cover every variant. Add a new failure, and the compiler shows you every caller to update."
+ },
+ {
+  "key": "d59d473e",
+  "text": "Writing Display and From implementations by hand is boilerplate. Two crates remove nearly all of it."
+ },
+ {
+  "key": "8978d6e9",
+  "text": "thiserror derives everything for your error enums. The error attribute is the message, and hash from generates the From conversion."
+ },
+ {
+  "key": "90b9c385",
+  "text": "Use it in libraries and domain code, where callers need to match on specific failures, like rescuing a specific exception class."
+ },
+ {
+  "key": "127666da",
+  "text": "anyhow is for application code. Its Result accepts any error, and context adds a human-readable breadcrumb, like a wrapped exception message."
+ },
+ {
+  "key": "3e73776d",
+  "text": "The rule of thumb is simple."
+ },
+ {
+  "key": "4b429662",
+  "text": "So when do you return a Result, and when do you panic?"
+ },
+ {
+  "key": "309bc36f",
+  "text": "Return a Result for anything that can reasonably happen: bad input, a missing record, a dropped connection."
+ },
+ {
+  "key": "f2ce3db8",
+  "text": "Panic is for bugs, when the program reaches a state that should be impossible. It is the unhandled exception that becomes a five hundred."
+ },
+ {
+  "key": "88e0d515",
+  "text": "Do not use panics as control flow, the way Rails code sometimes rescues its way through logic."
+ },
+ {
+  "key": "1d696375",
+  "text": "And in Module 5 you will see your error enums map straight onto HTTP status codes."
+ },
+ {
+  "key": "8d5e9519",
+  "text": "Result T, E is an ordinary enum: Ok(T) or Err(E). Failure is part of the signature."
+ },
+ {
+  "key": "eac4c82c",
+  "text": "match handles both cases. ? unwraps Ok or returns Err early from the current function."
+ },
+ {
+  "key": "cdd7c52e",
+  "text": "? converts errors with From, so lower-level errors compose into your own error enum."
+ },
+ {
+  "key": "7b5ed192",
+  "text": "unwrap/expect panic on failure. They are like bang methods: fine at boot and in tests, not on user input."
+ },
+ {
+  "key": "d6d48601",
+  "text": "Use custom error enums with thiserror in libraries, and anyhow + .context() in applications."
+ },
+ {
+  "key": "bb405eae",
+  "text": "Panics are for bugs. Expected failures are Results."
+ },
+ {
+  "key": "f79a91bb",
+  "text": "Every Rubyist trips over this in week one. Ruby has one String class. Rust has two string types that show up everywhere."
+ },
+ {
+  "key": "2cb79709",
+  "text": "By the end of this lesson you will know which is which, and which one to use in each situation."
+ },
+ {
+  "key": "997de1a2",
+  "text": "In Ruby, a string is a string. It lives on the heap and everything shares references to it."
+ },
+ {
+  "key": "008e675b",
+  "text": "Rust's String is the owned version. It owns a heap buffer, can grow, and is freed when its owner goes out of scope."
+ },
+ {
+  "key": "148a2951",
+  "text": "Ampersand str, called a string slice, is a borrowed view. It points at some UTF-8 bytes it does not own, and cannot change them."
+ },
+ {
+  "key": "0b6c25e2",
+  "text": "A good mental model: the String is the document, and the str slice is a window looking at part of it."
+ },
+ {
+  "key": "5ea099bb",
+  "text": "Let us look under the hood. We create a String with String from hello."
+ },
+ {
+  "key": "5d09c453",
+  "text": "The String itself is three numbers on the stack: a pointer, a length and a capacity. The actual bytes live on the heap."
+ },
+ {
+  "key": "2f2babc8",
+  "text": "Now we take a slice of bytes one to four. That is a str: just a pointer and a length, aimed into the same heap buffer."
+ },
+ {
+  "key": "025f0224",
+  "text": "No bytes were copied. That is why string slices are so cheap, and why they cannot outlive the String they point into."
+ },
+ {
+  "key": "288fdfff",
+  "text": "String literals are str slices. The text is baked into your compiled binary, and the slice points at it."
+ },
+ {
+  "key": "24802fdc",
+  "text": "To get an owned String, use String from, or to string. They do the same thing."
+ },
+ {
+  "key": "c9fe1162",
+  "text": "format is your interpolation, and it always produces a new owned String."
+ },
+ {
+  "key": "022fa591",
+  "text": "Going the other way is cheap. Borrow a String with an ampersand and you get a str, or slice part of it with a range."
+ },
+ {
+  "key": "62a935a9",
+  "text": "And to owned copies a slice into a brand new String."
+ },
+ {
+  "key": "acacf4cf",
+  "text": "Remember the direction. Making a String costs an allocation. Borrowing one is free."
+ },
+ {
+  "key": "731a5619",
+  "text": "In Ruby you never think about this. Pass a string in, get a string back."
+ },
+ {
+  "key": "1948f03e",
+  "text": "In Rust the idiom is: take a str slice as a parameter, and return an owned String when you build new text."
+ },
+ {
+  "key": "4bff03f1",
+  "text": "A str parameter accepts both literals and borrowed Strings. The compiler turns a reference to a String into a str automatically. That is called deref coercion."
+ },
+ {
+  "key": "18d60956",
+  "text": "Rules of thumb: str slices for parameters,"
+ },
+ {
+  "key": "8db970f7",
+  "text": "owned Strings for struct fields and for return values."
+ },
+ {
+  "key": "9f09c508",
+  "text": "Ruby hides string encoding from you. Index one gives you the second character, even when it takes two bytes."
+ },
+ {
+  "key": "b2ae596e",
+  "text": "Rust strings are always valid UTF-8, and len counts bytes, not characters. The e with an accent takes two bytes."
+ },
+ {
+  "key": "1e29fb1b",
+  "text": "For characters, iterate with chars. To count them, or grab the nth one, go through that iterator."
+ },
+ {
+  "key": "c8577255",
+  "text": "Indexing with a single integer is simply not allowed. It would be ambiguous, and it could not be done in constant time."
+ },
+ {
+  "key": "7ae59d8d",
+  "text": "You can slice with a byte range, but if the range cuts a character in half, it panics at runtime. Prefer chars, or methods like split and find. And if you really want raw bytes, as bytes gives you them."
+ },
+ {
+  "key": "b6b4be50",
+  "text": "Checkpoint. The function wants a str slice, and we have a String. Which call works?"
+ },
+ {
+  "key": "273e275d",
+  "text": "Good news: most of your favourite String methods have direct equivalents. Mostly the names change."
+ },
+ {
+  "key": "d3da47cd",
+  "text": "upcase becomes to uppercase, and strip becomes trim. Trim returns a slice of the original, so it allocates nothing."
+ },
+ {
+  "key": "c1a84df5",
+  "text": "split returns a lazy iterator instead of an array. Call collect if you need a Vec."
+ },
+ {
+  "key": "a8cfcceb",
+  "text": "include question mark becomes contains, gsub becomes replace, start with becomes starts with."
+ },
+ {
+  "key": "c7abadaf",
+  "text": "Predicates lose the question mark and gain an is prefix. And to i becomes parse, which returns a Result instead of silently giving you zero."
+ },
+ {
+  "key": "96383cc2",
+  "text": "Building strings up piece by piece looks familiar. Ruby uses the shovel operator."
+ },
+ {
+  "key": "71b9fcfe",
+  "text": "In Rust, you need a mutable String, and push str appends a slice. push appends a single character."
+ },
+ {
+  "key": "98bdd253",
+  "text": "The plus operator takes an owned String on the left and a str on the right. It reuses the left buffer, which means the original variable is moved."
+ },
+ {
+  "key": "d45b3b94",
+  "text": "And join works on slices of strings, just like Array join in Ruby."
+ },
+ {
+  "key": "9dc6a580",
+  "text": "String owns its buffer. ref str borrows a view into one (or into a literal in the binary)."
+ },
+ {
+  "key": "e3f93ef1",
+  "text": "Converting ref str → String allocates (to_string, to_owned, String from, format!). String → ref str is free (ref s)."
+ },
+ {
+  "key": "8f2453ac",
+  "text": "Take ref str parameters. ref String coerces to them automatically."
+ },
+ {
+  "key": "0c45e5bd",
+  "text": "No integer indexing. len() is bytes, so use .chars() for characters and byte ranges only on char boundaries."
+ },
+ {
+  "key": "3b4b8899",
+  "text": "Most Ruby String methods map 1:1: trim, split, contains, replace, to_uppercase, parse."
+ },
+ {
+  "key": "78232574",
+  "text": "If there is one Ruby feature you will miss least in Rust, it is Enumerable, because Rust has it too. With a few twists."
+ },
+ {
+  "key": "b9d0ef94",
+  "text": "Ruby's Array becomes Vec, short for vector. The vec macro is the literal syntax."
+ },
+ {
+  "key": "60fd5702",
+  "text": "It must be declared mut to push onto it. Push is your shovel operator."
+ },
+ {
+  "key": "a48e91a3",
+  "text": "first and get return an Option, because the element might not exist. Get is the safe version of indexing, like Ruby returning nil."
+ },
+ {
+  "key": "e5a9cd79",
+  "text": "Square-bracket indexing out of bounds does not return nil. It panics. Use get whenever the index comes from outside."
+ },
+ {
+  "key": "47f14d56",
+  "text": "And a Vec holds exactly one type of element."
+ },
+ {
+  "key": "a29a19e7",
+  "text": "Here is the Rosetta Stone for Enumerable. The names are almost all the same."
+ },
+ {
+  "key": "0f6c3b6c",
+  "text": "Blocks become closures. Pipes around the parameters, then an expression, written inside parentheses."
+ },
+ {
+  "key": "ad03326c",
+  "text": "select becomes filter. There is no reject, you just negate the condition. And reduce becomes fold, with the initial value first."
+ },
+ {
+  "key": "edd5c1ba",
+  "text": "each with index becomes enumerate, which yields index and value pairs."
+ },
+ {
+  "key": "32a71b0d",
+  "text": "And the rest are old friends: find, any, all, sum, count, take, flat map and zip."
+ },
+ {
+  "key": "658d2822",
+  "text": "Here is a classic Rails report: paid orders, mapped to totals, summed."
+ },
+ {
+  "key": "da0a944a",
+  "text": "The Rust version reads almost the same. The main extra is a call to iter at the start."
+ },
+ {
+  "key": "65f6b78a",
+  "text": "Here is the big difference. In Ruby, each step builds a whole new array. Rust iterator adapters are lazy, so they do nothing on their own."
+ },
+ {
+  "key": "5a08d5ac",
+  "text": "Work only happens when a consumer like sum pulls values through the chain, one element at a time."
+ },
+ {
+  "key": "fcfbe4f3",
+  "text": "The compiler fuses the whole chain into a single loop. It is as fast as the for loop you would write by hand, so there is no reason to avoid this style."
+ },
+ {
+  "key": "3c48ea83",
+  "text": "Ruby map returns an array right away. In Rust you end a chain with collect, to gather the results into a collection."
+ },
+ {
+  "key": "77c0cb2c",
+  "text": "collect can build many kinds of collection, so it needs to know which one. Either annotate the variable, or use the turbofish: colon colon, angle brackets."
+ },
+ {
+  "key": "8092d87b",
+  "text": "Collect pairs into a HashMap, and you have Rails index by."
+ },
+ {
+  "key": "cd305ef8",
+  "text": "There is a neat trick too. Collecting an iterator of Results into a Result of a Vec stops at the first error."
+ },
+ {
+  "key": "aa42c3a1",
+  "text": "Ruby's each always hands you a reference to the element. Rust makes you choose between three ways to iterate, and it is ownership again."
+ },
+ {
+  "key": "b510d1f9",
+  "text": "iter borrows each element. You can look but not touch, and the vector is still there afterwards."
+ },
+ {
+  "key": "50f4f5b7",
+  "text": "iter mut gives mutable references, so you can change elements in place, like Ruby map with a bang. Note the star to write through the reference."
+ },
+ {
+  "key": "5d2dcd64",
+  "text": "into iter takes ownership of each element. A plain for loop over the vector does this, so the vector is consumed and gone afterwards."
+ },
+ {
+  "key": "3d7e3a78",
+  "text": "Checkpoint. Look closely at how the loop iterates."
+ },
+ {
+  "key": "a6f37365",
+  "text": "The classic Ruby word counter uses Hash new with a default of zero."
+ },
+ {
+  "key": "36253d4c",
+  "text": "In Rust, HashMap lives in std collections. You import it with use."
+ },
+ {
+  "key": "d71b31d4",
+  "text": "The entry API is the idiomatic way to insert or update. entry finds the slot, or insert puts in zero if it is missing, and the star lets you modify the value."
+ },
+ {
+  "key": "234c5ccb",
+  "text": "get returns an Option. Combine it with copied and unwrap or to get Ruby's default value behaviour."
+ },
+ {
+  "key": "ea1154ee",
+  "text": "Bracket indexing a missing key panics, much like fetch raises a KeyError."
+ },
+ {
+  "key": "324e2be4",
+  "text": "One big surprise for Rubyists: the iteration order of a HashMap is not insertion order."
+ },
+ {
+  "key": "dc91113e",
+  "text": "A few more favourites. sort by key sorts by a field, like sort by with a symbol to proc."
+ },
+ {
+  "key": "834b4e09",
+  "text": "sort by with a comparator gives you full control. Here, names in descending order."
+ },
+ {
+  "key": "75839c12",
+  "text": "dedup is uniq, with a catch: it only removes consecutive duplicates. Sort first, or collect into a HashSet."
+ },
+ {
+  "key": "f93ef8d6",
+  "text": "There is no group by in the standard library, but the entry API makes it a three-line loop. The itertools crate adds many more Ruby-style helpers."
+ },
+ {
+  "key": "4eb82734",
+  "text": "And note that all of these mutate in place, like the bang versions in Ruby."
+ },
+ {
+  "key": "170a5d80",
+  "text": "Vec holds one element type. get(i) returns an Option, while v[i] panics when out of bounds."
+ },
+ {
+  "key": "c3f626ae",
+  "text": "Closures |x| expr replace blocks. Most Enumerable methods keep their names. The big renames are select → filter and reduce → fold."
+ },
+ {
+  "key": "84a1b43e",
+  "text": "Iterator adapters are lazy. A consumer (sum, count, collect) runs the whole chain in one fused loop."
+ },
+ {
+  "key": "2fef1e17",
+  "text": "collect needs a target type: annotate the variable or use the turbofish Vec _ ."
+ },
+ {
+  "key": "9707f205",
+  "text": "for x in ref v borrows, ref mut v edits, and for x in v consumes the Vec."
+ },
+ {
+  "key": "08c0f40a",
+  "text": "Use the HashMap entry API for counting and grouping. Iteration order is not insertion order."
+ },
+ {
+  "key": "7b864635",
+  "text": "Welcome to the final module. We are going to build the Rust version of a Rails scaffold: a JSON API for posts."
+ },
+ {
+  "key": "adc59f65",
+  "text": "But first we need the engine every Rust web framework runs on: async Rust and the Tokio runtime."
+ },
+ {
+  "key": "03f07402",
+  "text": "Let us be honest about how a Rails app handles concurrency."
+ },
+ {
+  "key": "c109dd89",
+  "text": "Puma gives you a few threads per process. They are fine for waiting on the database, but the global VM lock means only one thread runs Ruby code at a time."
+ },
+ {
+  "key": "2ab40262",
+  "text": "So for real parallelism you add processes, and every process carries its own copy of the whole app in memory."
+ },
+ {
+  "key": "c7f266f7",
+  "text": "Anything slow goes to Sidekiq: yet another process, with Redis in the middle."
+ },
+ {
+  "key": "18b89d29",
+  "text": "Rust with Tokio is different. One process, a worker thread per core, and thousands of lightweight tasks running truly in parallel. There is no global lock."
+ },
+ {
+  "key": "db4bde23",
+  "text": "Here is async Rust in its smallest form."
+ },
+ {
+  "key": "4c0df8b9",
+  "text": "Marking a function async means it can pause while it waits for I/O, such as a database query, an HTTP call or a timer."
+ },
+ {
+  "key": "6d7daf26",
+  "text": "Dot await is the pause point. While this task waits, the thread is free to run other tasks. No thread sits blocked."
+ },
+ {
+  "key": "6cab5e0e",
+  "text": "Async code needs a runtime to drive it. The tokio main attribute starts one and runs your async main function on it."
+ },
+ {
+  "key": "77891a19",
+  "text": "Inside, you call async functions and await them. It reads almost like ordinary sequential code. One rule: dot await only works inside an async function or block, which is why main is async too."
+ },
+ {
+  "key": "d8abc099",
+  "text": "Here is the number one surprise for newcomers. Calling an async function does not run it."
+ },
+ {
+  "key": "d89a456a",
+  "text": "It returns a future, a value that describes work still to be done. It behaves like a Ruby lambda you have not called yet."
+ },
+ {
+  "key": "619f4681",
+  "text": "The work only happens when you await the future."
+ },
+ {
+  "key": "1a66470a",
+  "text": "Forget the await and the compiler warns you. The future was created and then thrown away, so your code never ran."
+ },
+ {
+  "key": "ad501310",
+  "text": "Checkpoint. This is a classic bug. What happens if you drop the await?"
+ },
+ {
+  "key": "f8f08bb8",
+  "text": "Awaiting one thing after another is sequential. Two one-hundred-millisecond calls take two hundred milliseconds."
+ },
+ {
+  "key": "ceb4db03",
+  "text": "tokio join runs several futures concurrently and waits for all of them, so the total is about one hundred milliseconds."
+ },
+ {
+  "key": "174e7f1e",
+  "text": "tokio spawn starts an independent background task. It works like perform later, but it runs inside your process, with no Redis."
+ },
+ {
+  "key": "6370f734",
+  "text": "Spawn returns a join handle. Await it if you need the result, as you would join a Ruby thread."
+ },
+ {
+  "key": "6ddd3cde",
+  "text": "Notice async move. A spawned task can outlive the function that created it, so it must own its data. The compiler calls this requirement static, and it also requires Send so the task can move between threads."
+ },
+ {
+  "key": "90cfec80",
+  "text": "Async has one big rule: never block. A worker thread stuck on heavy computation cannot run any other tasks."
+ },
+ {
+  "key": "7c11447d",
+  "text": "Hashing a password is pure CPU work with nothing to await. Run it inside an async function and every request on that thread stalls."
+ },
+ {
+  "key": "d829c669",
+  "text": "Blocking sleep from the standard library is even worse. Always use the async version from Tokio."
+ },
+ {
+  "key": "c44d58cb",
+  "text": "For CPU-heavy or blocking work, wrap it in spawn blocking. Tokio runs it on a separate thread pool made for exactly this."
+ },
+ {
+  "key": "0ebfa984",
+  "text": "And wait with tokio time sleep, which yields the thread instead of holding it."
+ },
+ {
+  "key": "d319e9c3",
+  "text": "Sometimes tasks need to share state, like a counter or an in-memory cache."
+ },
+ {
+  "key": "ca1a6220",
+  "text": "In Ruby you might reach for a class variable. With several threads that is a quiet race condition, and nothing warns you."
+ },
+ {
+  "key": "0f712774",
+  "text": "In Rust you wrap the value in a Mutex, so only one task can change it at a time, and in an Arc, so many tasks can own it together."
+ },
+ {
+  "key": "cbbd2881",
+  "text": "Each task gets its own clone of the Arc. Cloning an Arc is cheap: it only increments a counter."
+ },
+ {
+  "key": "6d5c4b2b",
+  "text": "And here is the payoff. Leave out the Arc or the Mutex and the program will not compile. Data races are type errors in Rust."
+ },
+ {
+  "key": "82401e55",
+  "text": "async fn returns a future. It is lazy and does nothing until .awaited."
+ },
+ {
+  "key": "eef028f5",
+  "text": "#[tokio main] starts a runtime: worker threads running many tasks truly in parallel (no GVL)."
+ },
+ {
+  "key": "e2dcd859",
+  "text": "tokio join! runs futures concurrently. tokio spawn starts an independent task, like an in-process perform_later."
+ },
+ {
+  "key": "47beb61a",
+  "text": "Never block inside async code. Use spawn_blocking for CPU work and tokio time sleep for waiting."
+ },
+ {
+  "key": "e215b4c8",
+  "text": "Shared mutable state needs Arc Mutex T . Without it you get a compile error, not a data race."
+ },
+ {
+  "key": "ee2ccd16",
+  "text": "Time to build the API. We will use Axum, the most popular Rust web framework, built by the Tokio team."
+ },
+ {
+  "key": "d596f054",
+  "text": "Our goal is the Rust version of a Rails scaffold for posts, starting with routes and controllers."
+ },
+ {
+  "key": "dff109ec",
+  "text": "In Rails, one resources line generates the routes. It is convenient, and a little magic."
+ },
+ {
+  "key": "ec521329",
+  "text": "Axum has no resources macro. You build a Router and list every path yourself."
+ },
+ {
+  "key": "f38d8a4c",
+  "text": "Each route maps an HTTP method to a handler function. Get index and post create both share the posts path."
+ },
+ {
+  "key": "16e30883",
+  "text": "Path parameters go in curly braces, so slash posts slash id becomes the show route."
+ },
+ {
+  "key": "ec37340c",
+  "text": "Then you attach shared state, bind a TCP listener, and serve. That is your whole config dot ru."
+ },
+ {
+  "key": "f01939fe",
+  "text": "Let us follow one request through Axum: get slash posts slash forty-two."
+ },
+ {
+  "key": "231fa0ba",
+  "text": "First the router matches the method and path, just like routes dot r b."
+ },
+ {
+  "key": "296488f5",
+  "text": "Next come extractors. They pull typed values out of the request: the path parameter as a number, and your shared app state."
+ },
+ {
+  "key": "d6030c04",
+  "text": "Then your handler runs. It is a plain async function, the equivalent of a controller action."
+ },
+ {
+  "key": "0d336432",
+  "text": "Whatever it returns is converted into an HTTP response through the IntoResponse trait."
+ },
+ {
+  "key": "94826ded",
+  "text": "Put Rails underneath and the shapes match: Rack, routes, params, controller, render."
+ },
+ {
+  "key": "b5438375",
+  "text": "The big difference is types. If the id is not a number, the extractor rejects the request with a four hundred before your code runs."
+ },
+ {
+  "key": "2ef6a526",
+  "text": "Here is a classic show action. It reads the id from params, finds the post, and renders JSON."
+ },
+ {
+  "key": "7d85ed0b",
+  "text": "In Axum, a handler is an async function. Its parameters are extractors, and Axum fills them in from the request."
+ },
+ {
+  "key": "37bdeeed",
+  "text": "Path of i64 is params id, already parsed into a number. State gives you shared things such as the database pool."
+ },
+ {
+  "key": "0c061d1e",
+  "text": "The return type documents every outcome: JSON of a post, or an error status code."
+ },
+ {
+  "key": "72762f07",
+  "text": "find returns an Option. We wrap a found post in Json, and turn None into a four oh four. That is Rails' record not found, made explicit."
+ },
+ {
+  "key": "0c8236d8",
+  "text": "Rails needs strong params to whitelist input, and as json to shape output."
+ },
+ {
+  "key": "b4f5c187",
+  "text": "Rust uses serde for both. Derive Serialize on a struct, and it can be turned into JSON."
+ },
+ {
+  "key": "8bdbfac8",
+  "text": "Derive Deserialize on an input struct, and that struct is your strong params. Only these fields, with these types, are accepted."
+ },
+ {
+  "key": "867d054b",
+  "text": "Attributes tune the behavior. With serde default, published is optional and falls back to false."
+ },
+ {
+  "key": "36fef57e",
+  "text": "The create action takes a Json extractor, which deserializes the request body into the New Post struct."
+ },
+ {
+  "key": "242de5d6",
+  "text": "Order matters. The body can only be read once, so a body extractor like Json must be the last argument."
+ },
+ {
+  "key": "5f6ee828",
+  "text": "Returning a tuple of a status code and JSON gives you a two oh one Created, like render json with status created."
+ },
+ {
+  "key": "993fbb45",
+  "text": "For index, the Query extractor parses the query string, which is handy for pagination params."
+ },
+ {
+  "key": "4b7521d4",
+  "text": "And bad input never reaches your code. Axum rejects it with the right status automatically."
+ },
+ {
+  "key": "accbef9f",
+  "text": "Checkpoint. You will meet older tutorials online, so which syntax is current?"
+ },
+ {
+  "key": "2251ab5e",
+  "text": "Shared state is a struct that derives Clone. Axum clones it for every request, so wrap the expensive parts in an Arc to make cloning cheap."
+ },
+ {
+  "key": "efc2e5be",
+  "text": "Middleware comes from the tower ecosystem and is added with layer. It is the Rack of Rust."
+ },
+ {
+  "key": "0463cbb7",
+  "text": "The tower http crate gives you ready-made layers: CORS like rack cors, request tracing, compression, timeouts."
+ },
+ {
+  "key": "ee0c4257",
+  "text": "And a before action becomes a middleware function, or a custom extractor that authenticates the user."
+ },
+ {
+  "key": "7916d04e",
+  "text": "Router new().route(\"/posts/{id}\", get(show)): explicit routes, and Axum 0.8 uses {param}."
+ },
+ {
+  "key": "0c15feea",
+  "text": "Handlers are async fns. Extractors in their arguments parse the request into typed values and reject bad input automatically."
+ },
+ {
+  "key": "145ade21",
+  "text": "Body extractors such as Json T must be the last argument."
+ },
+ {
+  "key": "01b60630",
+  "text": "#[derive(Deserialize)] input structs are strong params, and #[derive(Serialize)] replaces as_json."
+ },
+ {
+  "key": "1032f003",
+  "text": "Return anything that implements IntoResponse. Share state with .with_state, and add middleware with .layer(...)."
+ },
+ {
+  "key": "665ca4e7",
+  "text": "Every Rails developer has a relationship with ActiveRecord. In this lesson we connect our posts API to Postgres the Rust way, with SQLx."
+ },
+ {
+  "key": "2d8376d7",
+  "text": "ActiveRecord is an ORM. Models know their tables, scopes chain, and the SQL mostly stays hidden."
+ },
+ {
+  "key": "350594a4",
+  "text": "SQLx makes a different trade. You write real SQL, and the macros check it against your actual database schema when you compile."
+ },
+ {
+  "key": "6bd85dd1",
+  "text": "If you miss the ORM style, Diesel offers a type-safe query builder and SeaORM feels closest to ActiveRecord. We use SQLx because it is the most popular choice with Axum."
+ },
+ {
+  "key": "3271b558",
+  "text": "First, the schema. Install the sqlx command line tool, which plays the role of the rails db tasks."
+ },
+ {
+  "key": "c8e13979",
+  "text": "Point it at your database with the DATABASE URL variable, then create the database, like rails db create."
+ },
+ {
+  "key": "4b2baa97",
+  "text": "sqlx migrate add creates a timestamped migration file, like rails generate migration."
+ },
+ {
+  "key": "4ac0ffb4",
+  "text": "The difference: migrations are plain SQL, with no Ruby DSL. A big serial id, not-null columns and defaults, written by hand."
+ },
+ {
+  "key": "4bec458a",
+  "text": "Then sqlx migrate run applies it, just like rails db migrate."
+ },
+ {
+  "key": "07f93c1e",
+  "text": "In Rails, database yml configures a connection pool that ActiveRecord manages behind the scenes."
+ },
+ {
+  "key": "f63e1523",
+  "text": "In Rust the pool is an ordinary value. A PgPool goes into your app state, and handlers receive it through the State extractor."
+ },
+ {
+  "key": "7ce0906f",
+  "text": "You build it with pool options: max connections, then connect with the URL from the environment."
+ },
+ {
+  "key": "a73ba2cd",
+  "text": "The migrate macro embeds your migration files in the binary, so the app can migrate itself on boot."
+ },
+ {
+  "key": "eff8df02",
+  "text": "Cloning a pool is cheap, because it is reference counted inside, which is why the state can derive Clone."
+ },
+ {
+  "key": "88aa118d",
+  "text": "Your ActiveRecord finders map onto a small set of fetch methods."
+ },
+ {
+  "key": "33240c98",
+  "text": "fetch all returns a vector, like Post dot all."
+ },
+ {
+  "key": "d6ef1411",
+  "text": "fetch one expects exactly one row. If there is none you get a row not found error, much like find raising record not found."
+ },
+ {
+  "key": "88da7d8b",
+  "text": "fetch optional returns an Option, the Rust version of find by returning nil."
+ },
+ {
+  "key": "8f84474d",
+  "text": "Where clauses are just SQL with numbered parameters. Parameters are always bound, never interpolated, so you get SQL injection safety for free."
+ },
+ {
+  "key": "fd5aebdd",
+  "text": "Creates use insert with returning, so Postgres hands back the new row with its id. Deletes and updates use execute."
+ },
+ {
+  "key": "dc58be11",
+  "text": "Here is the star feature. The query as macro takes a target struct, a SQL string and the bind parameters."
+ },
+ {
+  "key": "8113f26e",
+  "text": "At compile time, SQLx sends this query to your development database and checks it: the columns exist, the types match the struct fields, and the parameter is an i64."
+ },
+ {
+  "key": "df6f68f4",
+  "text": "Make a typo in a column name, and the build fails. You find the problem at compile time, not in production."
+ },
+ {
+  "key": "2c94f26e",
+  "text": "Then fetch optional runs it and maps the row into a Post, giving you an Option."
+ },
+ {
+  "key": "c54fb7fe",
+  "text": "FromRow is only needed for the non-macro query as function. It is handy for dynamic queries that cannot be checked at compile time."
+ },
+ {
+  "key": "90485eb8",
+  "text": "Checkpoint. Find by, the nil-returning finder. Which fetch method matches?"
+ },
+ {
+  "key": "7f6f9033",
+  "text": "Transactions in Rails use a block. Raise inside it and everything rolls back."
+ },
+ {
+  "key": "bf8b173a",
+  "text": "In SQLx you begin a transaction and get a transaction value."
+ },
+ {
+  "key": "29eaf3bc",
+  "text": "Each query executes against the transaction instead of the pool."
+ },
+ {
+  "key": "aafb813d",
+  "text": "Then you commit. Here is where ownership shines: if any question mark returns early, the transaction is dropped without a commit, and SQLx rolls it back automatically."
+ },
+ {
+  "key": "ad4bb08b",
+  "text": "Last piece: error handling. Rails has rescue from, which turns record not found into a four oh four."
+ },
+ {
+  "key": "fda78832",
+  "text": "In Rust you define an app error enum. Implementing From for sqlx errors maps row not found to Not Found and wraps everything else."
+ },
+ {
+  "key": "399fa7d2",
+  "text": "Then you implement IntoResponse, deciding the HTTP status for each variant. Not found is four oh four, invalid is four twenty-two, and anything else is a five hundred."
+ },
+ {
+  "key": "028862ff",
+  "text": "Now handlers return a Result with your app error as the error type."
+ },
+ {
+  "key": "c54e2978",
+  "text": "Inside, you just write the happy path. fetch one either gives you a post or an error."
+ },
+ {
+  "key": "c971f5b0",
+  "text": "The question mark operator converts a database error into an app error through your From implementation, and returns early."
+ },
+ {
+  "key": "21cb2ecd",
+  "text": "Axum then calls into response on it. A missing post becomes a four oh four: rescue from, checked by the type system."
+ },
+ {
+  "key": "8548d984",
+  "text": "sqlx migrate add / run replace rails g migration / db:migrate. Migrations are plain SQL."
+ },
+ {
+  "key": "f89e85d3",
+  "text": "A PgPool is cheap to clone. Store it in AppState and pull it out with State."
+ },
+ {
+  "key": "d56eaaca",
+  "text": "query_as!(Post, \"SELECT …\", args) is checked at compile time against your schema."
+ },
+ {
+  "key": "4ced9bd1",
+  "text": "fetch_one ≈ find (errors if missing), fetch_optional ≈ find_by (Option), fetch_all ≈ where/all."
+ },
+ {
+  "key": "19c60834",
+  "text": "Transactions roll back if dropped without commit(). Map sqlx Error into your own AppError with From, and to HTTP statuses with IntoResponse."
+ },
+ {
+  "key": "4dffe04c",
+  "text": "The final lesson. We test our posts API, then ship it, and finish with where to go next on your Rust journey."
+ },
+ {
+  "key": "d41cacad",
+  "text": "Here is a familiar model spec: describe, it, expect to eq."
+ },
+ {
+  "key": "957f2aba",
+  "text": "In Rust, unit tests live in the same file as the code they test, inside a module called tests."
+ },
+ {
+  "key": "d8b531b9",
+  "text": "The cfg test attribute means this module is compiled only when you run cargo test. It never ships in your release binary."
+ },
+ {
+  "key": "7f3f7cdd",
+  "text": "use super star brings the parent module into scope. Because tests live inside the module, they can even test private functions."
+ },
+ {
+  "key": "b5ffae5d",
+  "text": "Each test is a function marked with the test attribute. assert eq is your expect to eq, and on failure it prints both values."
+ },
+ {
+  "key": "cfbe4217",
+  "text": "cargo test compiles your project in test mode and runs every test, in parallel by default."
+ },
+ {
+  "key": "852dac86",
+  "text": "Pass part of a name to filter, like running rspec on a single file."
+ },
+ {
+  "key": "fcf7cbc7",
+  "text": "Unit tests sit next to the code. Integration tests, the equivalent of request specs, go in a top-level tests folder and use your crate from the outside."
+ },
+ {
+  "key": "2d28eeaa",
+  "text": "Assertions are macros. For errors, check is err on the Result, or mark the test should panic."
+ },
+ {
+  "key": "28cf1144",
+  "text": "There is no FactoryBot. Small builder functions, or the Default trait, do the job."
+ },
+ {
+  "key": "d57c794a",
+  "text": "Now the API itself. Rails request specs fire fake requests at your app without a real server. Axum can do the same thing."
+ },
+ {
+  "key": "1d08f3c9",
+  "text": "The sqlx test attribute creates a fresh test database for each test, applies your migrations, and hands you a pool. It works like transactional fixtures, but fully isolated."
+ },
+ {
+  "key": "1250e397",
+  "text": "Build the same router your main function uses, then call oneshot with a request. No port, no HTTP server, just a function call."
+ },
+ {
+  "key": "c81bcacc",
+  "text": "And assert on the response status, or read the body and parse the JSON."
+ },
+ {
+  "key": "f6eaa300",
+  "text": "Checkpoint. Do your tests end up inside your production binary?"
+ },
+ {
+  "key": "325b55dd",
+  "text": "Deployment. In Rails, your production image needs Ruby, every gem, maybe Node for assets, and a bundle install."
+ },
+ {
+  "key": "85fc9bd4",
+  "text": "Rust uses a multi-stage build. The first stage has the full compiler toolchain and builds a release binary."
+ },
+ {
+  "key": "4108ecef",
+  "text": "SQLX OFFLINE tells the query macros to use the cached metadata from cargo sqlx prepare, so the build needs no database."
+ },
+ {
+  "key": "54bf0a80",
+  "text": "The second stage starts from a slim Debian image and copies in one file, the binary. No compiler, no source code, no gems."
+ },
+ {
+  "key": "162dca8e",
+  "text": "The result is a small image that boots in milliseconds and runs comfortably on the smallest instance you can rent."
+ },
+ {
+  "key": "86c3d4d7",
+  "text": "Configuration. Rails has encrypted credentials and environment variables."
+ },
+ {
+  "key": "8187be71",
+  "text": "Rust apps follow twelve-factor style: read environment variables, and in development load a dot env file with the dotenvy crate."
+ },
+ {
+  "key": "7209c67c",
+  "text": "For logging, the standard is the tracing crate. Install a subscriber once at startup and control verbosity with the RUST LOG variable."
+ },
+ {
+  "key": "2e544b87",
+  "text": "Log calls are structured. Fields like post id are real key-value pairs, ready for JSON logs and your observability tools."
+ },
+ {
+  "key": "62f5da44",
+  "text": "That is the whole journey: ownership, borrowing, enums, traits, errors, async, and a real web API with a database, tests and a Docker image."
+ },
+ {
+  "key": "4e62e27e",
+  "text": "Keep the momentum. Do Rustlings or the Exercism track a little every day."
+ },
+ {
+  "key": "72417e9d",
+  "text": "For a book-length version of what we just built, read Zero to Production in Rust."
+ },
+ {
+  "key": "edc968a5",
+  "text": "Or bring Rust back home: write a native gem with magnus to speed up a hot path in your Rails app."
+ },
+ {
+  "key": "8f57b6c7",
+  "text": "Learn the everyday crates, and re-watch the ownership module. It clicks the second time."
+ },
+ {
+  "key": "0cde7746",
+  "text": "Most of all, ship something small and real. Thanks for taking Rust for Rails Devs. Welcome, Rustacean."
+ },
+ {
+  "key": "77e43d34",
+  "text": "#[cfg(test)] mod tests { use super *; #[test] fn … }: compiled only for cargo test."
+ },
+ {
+  "key": "ac53f2a0",
+  "text": "Integration tests in tests/*.rs use your crate like an outside user, the equivalent of request specs."
+ },
+ {
+  "key": "661bcd7d",
+  "text": "app.oneshot(request) tests the full router without a server. #[sqlx test] gives each test a fresh migrated database."
+ },
+ {
+  "key": "67b6d046",
+  "text": "A multi-stage Docker build ships just the release binary: small images and millisecond boots."
+ },
+ {
+  "key": "0da8baf2",
+  "text": "Config comes from env vars (dotenvy for local .env). tracing gives structured logs controlled by RUST_LOG."
+ }
+]

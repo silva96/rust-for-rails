@@ -1,0 +1,5 @@
+{
+  "_doc": "Narration voice per course language. voice: a Kokoro voice id (see README). espeak: the espeak-ng language used to turn text into phonemes. speed: 1.0 = normal.",
+  "en": { "voice": "af_heart", "espeak": "en-us", "speed": 1.0 },
+  "es": { "voice": "ef_dora", "espeak": "es-419", "speed": 1.0 }
+}

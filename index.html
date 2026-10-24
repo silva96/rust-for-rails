@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rust for Rails Devs</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦀</text></svg>" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="toc"></aside>
+    <div id="scrim"></div>
+    <div id="content">
+      <div class="topbar">
+        <button id="menu" class="iconbtn" title="Table of contents">☰</button>
+        <a href="#/" class="tb-brand">◆→🦀 Rust for Rails Devs</a>
+        <span class="sp"></span>
+        <select id="langSel" class="iconbtn lang" title="Language"></select>
+        <a href="#/glossary" class="iconbtn" title="Rosetta Stone">📖</a>
+        <a href="#/shortcuts" class="iconbtn" title="Keyboard shortcuts">⌨️</a>
+        <button id="themeBtn" class="iconbtn" title="Toggle theme">◐</button>
+      </div>
+      <main id="main"></main>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <!-- UI languages: one file per language, see README "Adding a language" -->
+  <script src="js/lang/en.js"></script>
+  <script src="js/lang/es.js"></script>
+  <script src="js/highlight.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="content/course.js"></script>
+  <script src="content/m1-foundations.js"></script>
+  <script src="content/m2-ownership.js"></script>
+  <script src="content/m3-modeling.js"></script>
+  <script src="content/m4-errors-collections.js"></script>
+  <script src="content/m5-web.js"></script>
+  <script src="content/es/course.js"></script>
+  <script src="content/es/m1-foundations.js"></script>
+  <script src="content/es/m2-ownership.js"></script>
+  <script src="content/es/m3-modeling.js"></script>
+  <script src="content/es/m4-errors-collections.js"></script>
+  <script src="content/es/m5-web.js"></script>
+  <!-- pre-generated neural narration (tools/tts); the player falls back to browser speech without it -->
+  <script src="audio/en/manifest.js"></script>
+  <script src="audio/es/manifest.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

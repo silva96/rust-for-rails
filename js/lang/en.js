@@ -1,0 +1,38 @@
+// UI strings for English. Missing keys fall back to English.
+I18N.register('en', { name: 'English', speech: 'en-US' }, {
+    complete: '{n}% complete', searchLessons: 'Search lessons…  ( / )', rosettaTitle: 'Rails → Rust Rosetta Stone', shortcutsTitle: 'Keyboard shortcuts',
+    eyebrow: 'An interactive motion course', continue: '▶ Continue: {t}', start: '▶ Start the course', cheatsheet: '📖 Rails → Rust cheatsheet',
+    modules: 'modules', lessons: 'lessons', minVideo: 'of motion video', quizQuestions: 'quiz questions', completeLbl: 'complete',
+    howTitle: 'How this course works',
+    how: [
+      ['🎬', 'Motion lessons', 'Every lesson is an animated video built from live code. Pause, scrub, jump between chapters or change the speed.'],
+      ['❓', 'In-video checkpoints', 'The video stops and asks you a question. Answer it to keep going.'],
+      ['📝', 'Summaries & quizzes', 'Each lesson ends with a recap, a Rails→Rust mapping and a graded quiz.'],
+      ['🛠️', 'Hands-on practice', 'Write real Rust in the editor and run it in the Rust Playground with one click.'],
+      ['🔊', 'Narrator & captions', 'A neural narrator voice (V) and captions (C). There\'s a full transcript too.'],
+      ['💾', 'Progress saved', 'Your progress, XP and code are saved in your browser automatically.'],
+    ],
+    curriculum: 'Curriculum', module: 'Module {n}', persistTitle: '💾 Your progress is saved in this browser',
+    persistBody: 'Watched lessons, resume positions, quiz scores, checkpoint answers, XP and your practice code are all kept in localStorage.',
+    reset: '🗑 Reset progress', resetConfirm: 'Erase all progress, quiz scores and saved code?',
+    course: 'Course', videoComplete: '🎬 Video complete', takeQuiz: '📝 Take the quiz', readSummary: '📋 Read the summary', nextLesson: 'Next lesson →', replay: '↺ Replay',
+    tabSummary: '📋 Summary', tabQuiz: '📝 Quiz', tabPractice: '🛠️ Practice ({n})', tabTranscript: '💬 Transcript', tabChapters: '🎞️ Chapters',
+    keyTakeaways: 'Key takeaways', railsToRust: 'Rails → Rust', inRails: 'In Rails / Ruby', inRust: 'In Rust', gotchas: 'Gotchas for Rubyists', cheat: 'Cheat snippet', deeper: 'Go deeper',
+    autoScroll: ' Auto-scroll with video', intro: 'Intro', scene: 'Scene {n}', prev: '← Previous', next: 'Next →', finish: '🏁 Finish', backOverview: 'Back to the course overview',
+    reference: 'Reference', rosettaSub: 'Every Rails/Ruby concept from the course next to its Rust counterpart. {n} entries.', filter: 'Filter… (e.g. nil, has_many, rescue)',
+    railsRuby: 'Rails / Ruby', rust: 'Rust', lesson: 'Lesson', help: 'Help',
+    keys: [['Space / K', 'Play / pause'], ['← / →', 'Seek 5 seconds'], ['J / L', 'Seek 10 seconds'], ['N / P', 'Next / previous scene'], ['0–9', 'Jump to 0%–90%'], ['C', 'Toggle captions'], ['V', 'Toggle narrator voice'], ['F', 'Fullscreen (or double-click the video)'], ['/', 'Search lessons'], ['Click the timeline', 'Seek. Hover to see chapter names']],
+    // player
+    recapIntro: "Let's recap what we covered.", recap: 'Recap', checkpoint: 'Checkpoint', quickCheck: 'Quick check', chapters: 'Chapters',
+    waitMsg: '⏸ Answer the checkpoint to continue, or <u>skip</u>', correct: '✅ Correct!', notQuite: '❌ Not quite.',
+    tPlay: 'Play / pause (Space)', tBack: 'Back 10s (←)', tFwd: 'Forward 10s (→)', tPrevS: 'Previous scene (P)', tNextS: 'Next scene (N)', tSpeed: 'Playback speed', tCC: 'Captions (C)', tVoice: 'Narrator voice (V)', tFS: 'Fullscreen (F)',
+    noSpeech: 'Speech synthesis is not supported in this browser.',
+    // quiz
+    lessonQuiz: 'Lesson quiz', quizMeta: '{n} questions · pass with 70% · best so far: <b class="best">{b}</b>',
+    qMcq: 'Multiple choice', qCompiles: 'Does it compile?', qFill: 'Fill in the blank', qOrder: 'Put in order', qMatch: 'Match them up', willCompile: 'Will this compile?',
+    yesCompiles: '✅ Yes, it compiles', noCompiles: '🛑 No, the compiler rejects it', checkAnswer: 'Check answer', answerAll: 'Answer every part first.',
+    correctDot: '✅ Correct.', notQuiteDot: '❌ Not quite.', clickOrder: 'Click the items in the right order ↓', correctOrder: 'Correct order:', choose: 'Choose…', answer: 'Answer: {a}',
+    passed: 'Lesson quiz passed. Nice work, Rustacean!', failed: 'Not quite 70% yet. Review the summary and try again.', retry: 'Retry quiz',
+    exUpdated: 'ℹ️ This exercise was improved since you last opened it, so your earlier code was reset.', toPractice: 'Continue to practice →', goPractice: '🛠️ Go to practice', noPractice: 'No practice exercises for this lesson.', runPg: '▶ Run in Rust Playground', hint: '💡 Hint ({n})', hintsLeft: '💡 Hint ({n} left)', hintN: 'Hint {n}:',
+    showSol: '👀 Show solution', resetCode: '↺ Reset', markDone: 'Mark as done', done: '✓ Done', solution: 'Solution', runSol: '▶ Run solution', resetCodeConfirm: 'Reset your code to the starter?',
+});

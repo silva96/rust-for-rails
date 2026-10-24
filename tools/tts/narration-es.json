@@ -1,0 +1,2398 @@
+[
+ {
+  "key": "78187908",
+  "text": "Te damos la bienvenida a Rust para devs de Rails. Ya sabes construir aplicaciones web. Ahora vamos a enseñarle un nuevo lenguaje a tus instintos."
+ },
+ {
+  "key": "43d04075",
+  "text": "En esta primera lección: por qué Rust vale tu tiempo, y qué cambia cuando llegas desde Ruby."
+ },
+ {
+  "key": "4e08c176",
+  "text": "Ruby hace un trato: confía en ti, no se mete en tu camino, y atrapa los errores mientras el programa corre."
+ },
+ {
+  "key": "08258d77",
+  "text": "Rust hace el trato contrario. El compilador revisa tu trabajo antes, así que categorías enteras de bugs nunca llegan a producción."
+ },
+ {
+  "key": "aaff904d",
+  "text": "Entonces la fricción se mueve. Dejas de depurar en producción y empiezas a negociar con el compilador."
+ },
+ {
+  "key": "35d7326b",
+  "text": "Esto es lo que te compra toda esa rigurosidad."
+ },
+ {
+  "key": "8b755f81",
+  "text": "Velocidad. Rust compila a código máquina nativo. En trabajo pesado de CPU suele ser de diez a cien veces más rápido que Ruby."
+ },
+ {
+  "key": "0f368afa",
+  "text": "Memoria. No hay recolector de basura. En su lugar, las reglas de ownership, verificadas al compilar, deciden exactamente cuándo se libera la memoria. Sin pausas de GC, y con un consumo mínimo."
+ },
+ {
+  "key": "46826375",
+  "text": "Seguridad. Nada de undefined method para nil, nada de data races entre hilos. Se vuelven errores de compilación en vez de alertas a las tres de la mañana."
+ },
+ {
+  "key": "4a9447e7",
+  "text": "Refactorizar deja de dar miedo. Cambias un tipo y el compilador te entrega la lista de todo lo que rompiste."
+ },
+ {
+  "key": "3c7c2778",
+  "text": "Las herramientas son excelentes y vienen incluidas, y despliegas un solo binario autocontenido."
+ },
+ {
+  "key": "f949c0e1",
+  "text": "Este es un bug que todo dev de Rails ha subido a producción. find by devuelve nil, y llamar a name sobre eso explota."
+ },
+ {
+  "key": "3680060b",
+  "text": "Te enteras en producción, por el rastreador de excepciones, a las tres de la mañana."
+ },
+ {
+  "key": "ae0530d8",
+  "text": "En Rust, una búsqueda que puede fallar devuelve un Option: o Some, con el usuario adentro, o None. No puedes meter la mano adentro sin revisar primero cuál de los dos te tocó."
+ },
+ {
+  "key": "b2a631a0",
+  "text": "Así que este código ni siquiera compila. El bug se detecta en tu laptop, en segundos."
+ },
+ {
+  "key": "0c0c2f72",
+  "text": "Esa es la idea central de todo el curso. Lo que Ruby revisa en ejecución, Rust lo revisa al compilar."
+ },
+ {
+  "key": "5353760e",
+  "text": "No tienes que botar Rails. Rust brilla justo a su lado."
+ },
+ {
+  "key": "c8972982",
+  "text": "Puedes escribir extensiones nativas para las partes críticas de una app Rails. Herramientas como magnus hacen que Rust se pueda llamar desde Ruby."
+ },
+ {
+  "key": "a5562396",
+  "text": "Puedes separar servicios de alto rendimiento, como receptores de webhooks o servidores de websockets."
+ },
+ {
+  "key": "8d829cea",
+  "text": "Rust es fantástico para herramientas de línea de comandos y para workers pesados en segundo plano."
+ },
+ {
+  "key": "922faac9",
+  "text": "Y sí, puedes construir aplicaciones web completas. En el Módulo 5 vas a construir una API JSON con Axum y SQLx."
+ },
+ {
+  "key": "a15b48b7",
+  "text": "Revisión rápida antes de seguir. Elige una respuesta para continuar."
+ },
+ {
+  "key": "9e313fed",
+  "text": "Un cambio de mentalidad para llevar durante todo el curso."
+ },
+ {
+  "key": "d1c5b58e",
+  "text": "El compilador es tu pair programmer. Sus mensajes de error son famosos por lo útiles, muchas veces con el arreglo exacto."
+ },
+ {
+  "key": "27a16b90",
+  "text": "Te vas a topar con una pared con el ownership. A todos nos pasa. Se supera, y lo vamos a tomar con calma."
+ },
+ {
+  "key": "3fa17f71",
+  "text": "Todo lo que sabes de aplicaciones web, HTTP, SQL, testing y diseño sigue aplicando. No partes de cero."
+ },
+ {
+  "key": "a021ed7c",
+  "text": "Repasemos lo que vimos."
+ },
+ {
+  "key": "4997de33",
+  "text": "Rust es compilado, de tipado estático y no tiene recolector de basura."
+ },
+ {
+  "key": "3b45a43a",
+  "text": "Los bugs que Ruby reporta en ejecución, como NoMethodError sobre nil, son errores de compilación en Rust."
+ },
+ {
+  "key": "4b49b53b",
+  "text": "Los valores que pueden faltar son Option T . Rust no tiene nil."
+ },
+ {
+  "key": "4b15eca9",
+  "text": "Rust complementa a Rails: extensiones nativas, servicios rápidos, CLIs, workers o apps web completas."
+ },
+ {
+  "key": "e7402850",
+  "text": "Trata al compilador como un pair programmer y lee sus mensajes de error."
+ },
+ {
+  "key": "0249a0b3",
+  "text": "En Ruby haces malabares con varias herramientas: rails new, bundler, rake, rspec, rubocop. En Rust, una sola herramienta hace casi todo. Cargo."
+ },
+ {
+  "key": "9df5ad0b",
+  "text": "Donde escribirías rails new, escribes cargo new. Crea el esqueleto del proyecto e inicializa un repo de git."
+ },
+ {
+  "key": "4559fcd9",
+  "text": "El resultado es mínimo. Un archivo manifiesto y una carpeta de código con un solo archivo."
+ },
+ {
+  "key": "62229c25",
+  "text": "Cargo punto toml cumple el rol de tu Gemfile y tu gemspec juntos."
+ },
+ {
+  "key": "25f6273d",
+  "text": "Main punto r s es el punto de entrada. La ejecución parte en la función llamada main."
+ },
+ {
+  "key": "b3e2b329",
+  "text": "Después del primer build también tienes Cargo punto lock, el equivalente de Gemfile punto lock, y una carpeta target con lo compilado."
+ },
+ {
+  "key": "2ce322ac",
+  "text": "Pongamos un Gemfile al lado de un manifiesto de Cargo."
+ },
+ {
+  "key": "84394aa2",
+  "text": "La sección package describe tu crate: su nombre, versión y la edición de Rust, que es algo así como apuntar a una versión de Ruby."
+ },
+ {
+  "key": "53781906",
+  "text": "Las dependencias son tus gems. Los paquetes se llaman crates, y viven en crates punto io en vez de rubygems."
+ },
+ {
+  "key": "af788152",
+  "text": "Las features son muy importantes en Rust. Activan o desactivan partes opcionales de un crate al compilar, así solo compilas lo que usas."
+ },
+ {
+  "key": "11bcd4ed",
+  "text": "Y las dev dependencies son tu grupo de development y test."
+ },
+ {
+  "key": "fff39783",
+  "text": "Estos son los comandos que vas a escribir todos los días, junto a sus equivalentes en Ruby."
+ },
+ {
+  "key": "1623577d",
+  "text": "cargo add agrega una dependencia, como bundle add. No hay un paso de install aparte, porque Cargo descarga las dependencias al compilar."
+ },
+ {
+  "key": "be1b3607",
+  "text": "cargo run compila y ejecuta tu programa."
+ },
+ {
+  "key": "5b9e4d0b",
+  "text": "cargo check es tu nuevo mejor amigo. Revisa los tipos sin producir un binario, así que es mucho más rápido. Úsalo todo el tiempo."
+ },
+ {
+  "key": "2ed77ba0",
+  "text": "cargo test corre tus tests. No necesitas ninguna gem extra."
+ },
+ {
+  "key": "c1722800",
+  "text": "cargo fmt formatea tu código, clippy le pasa el linter, y cargo doc genera documentación navegable de tu proyecto y de cada dependencia."
+ },
+ {
+  "key": "4eff9bc5",
+  "text": "Hay un concepto que Ruby no tiene: los perfiles de build."
+ },
+ {
+  "key": "05f26670",
+  "text": "Por defecto obtienes un build de debug. Compila rápido pero corre más lento, con chequeos de seguridad extra."
+ },
+ {
+  "key": "0c6cc3cc",
+  "text": "Agrega guion guion release para un build optimizado. Siempre mide y despliega en modo release. Los builds de debug pueden ser diez veces más lentos."
+ },
+ {
+  "key": "9b4cc342",
+  "text": "Checkpoint. ¿Qué comando te da el ciclo de feedback más rápido?"
+ },
+ {
+  "key": "0d3d7e72",
+  "text": "Cuando las apps crecen, los equipos de Rails recurren a engines o a packwerk. Rust tiene workspaces."
+ },
+ {
+  "key": "2e77ccfb",
+  "text": "Un workspace agrupa varios crates bajo un solo lockfile y una sola carpeta de build."
+ },
+ {
+  "key": "afb6c703",
+  "text": "Puedes testearlos todos a la vez, o apuntar a un solo paquete con guion p."
+ },
+ {
+  "key": "746336eb",
+  "text": "El código compartido va en crates de librería con un lib punto r s, y los ejecutables tienen un main punto r s."
+ },
+ {
+  "key": "de5c9a22",
+  "text": "cargo new crea un proyecto con Cargo.toml y src/main.rs."
+ },
+ {
+  "key": "d7335dd0",
+  "text": "Cargo.toml ≈ Gemfile + gemspec, y Cargo.lock ≈ Gemfile.lock. Los paquetes son crates en crates.io."
+ },
+ {
+  "key": "d6bb7831",
+  "text": "Las features activan partes opcionales de un crate al compilar."
+ },
+ {
+  "key": "e5af616f",
+  "text": "cargo check es el ciclo de feedback más rápido. cargo run, test, fmt, clippy y doc cubren el resto."
+ },
+ {
+  "key": "b126ada4",
+  "text": "Los builds de debug son para desarrollar. Mide y despliega con --release."
+ },
+ {
+  "key": "da8f53d4",
+  "text": "En Ruby, cualquier variable se puede reasignar a cualquier cosa en cualquier momento. Rust es más estricto, y eso resulta ser una ventaja."
+ },
+ {
+  "key": "ab957f6d",
+  "text": "En Ruby, las variables son mutables y no tienen tipo. Hasta puedes convertir un número en un string."
+ },
+ {
+  "key": "fd599111",
+  "text": "En Rust declaras variables con let, y son inmutables por defecto."
+ },
+ {
+  "key": "fb24e22e",
+  "text": "Si intentas reasignar una, el compilador te detiene, y te dice exactamente cómo arreglarlo."
+ },
+ {
+  "key": "e9c1cb3c",
+  "text": "Agrega la palabra mut cuando de verdad quieras cambiar un valor. La mutación se vuelve visible e intencional."
+ },
+ {
+  "key": "7033f102",
+  "text": "Pero incluso una variable mutable mantiene su tipo. Si total es un entero, sigue siendo un entero."
+ },
+ {
+  "key": "19e394a7",
+  "text": "Rust tiene tipado estático, pero rara vez escribes los tipos de las variables locales. El compilador los infiere."
+ },
+ {
+  "key": "fe694b79",
+  "text": "Un literal de string es un string slice. Los números enteros son i treinta y dos por defecto, y los decimales f sesenta y cuatro."
+ },
+ {
+  "key": "6e736885",
+  "text": "Puedes anotar tipos con dos puntos cuando quieras ser específico, o cuando el compilador no puede deducirlo."
+ },
+ {
+  "key": "eded2b7d",
+  "text": "Los literales numéricos aceptan un sufijo de tipo, y los guiones bajos hacen legibles los números grandes, igual que en Ruby."
+ },
+ {
+  "key": "ecac147f",
+  "text": "Ruby tiene una sola clase Integer que crece en silencio todo lo que necesite. Rust te hace elegir un tamaño."
+ },
+ {
+  "key": "b0bfdce8",
+  "text": "i treinta y dos es el tipo por defecto. i sesenta y cuatro es el que quieres para ids bigint de la base de datos, como las llaves primarias de Rails."
+ },
+ {
+  "key": "be1b154e",
+  "text": "Los tipos u no tienen signo y no pueden ser negativos. Son ideales para puertos, bytes y conteos."
+ },
+ {
+  "key": "2a8cd40b",
+  "text": "usize es el tipo para índices y largos. Lo vas a ver en todas partes con los vectores."
+ },
+ {
+  "key": "2898a184",
+  "text": "Y f sesenta y cuatro para floats. Igual que en Rails, nunca guardes dinero en un float. Usa centavos enteros o un crate de decimales."
+ },
+ {
+  "key": "e2913a16",
+  "text": "Como los tamaños son fijos, el overflow es posible. Los builds de debug hacen panic con el overflow, así lo atrapas mientras desarrollas."
+ },
+ {
+  "key": "28be00f0",
+  "text": "Este es un modismo de Rust que sorprende a los recién llegados: el shadowing."
+ },
+ {
+  "key": "3eec7c59",
+  "text": "Puedes declarar una variable nueva con el mismo nombre usando let otra vez. La nueva oculta a la anterior."
+ },
+ {
+  "key": "b91cc754",
+  "text": "A diferencia de mut, el shadowing puede cambiar el tipo. Aquí un string se convierte en un entero de sesenta y cuatro bits."
+ },
+ {
+  "key": "b19d13e3",
+  "text": "Se lee como un pipeline de transformaciones, muy parecido a cómo limpiarías params en un controller de Rails."
+ },
+ {
+  "key": "57b269b3",
+  "text": "Dentro de las funciones, los tipos se infieren. Pero las firmas de las funciones siempre declaran sus tipos."
+ },
+ {
+  "key": "5d27ec53",
+  "text": "Los parámetros se anotan con dos puntos, y el tipo de retorno va después de una flecha."
+ },
+ {
+  "key": "7744cb8d",
+  "text": "format con signo de exclamación es una macro. Funciona como la interpolación de strings."
+ },
+ {
+  "key": "2668325d",
+  "text": "Buena noticia para los rubyistas: la última expresión es el valor de retorno, igual que en Ruby. No necesitas la palabra return."
+ },
+ {
+  "key": "278dd0b7",
+  "text": "Un detalle: un punto y coma al final convierte una expresión en una sentencia. Es un error clásico de principiante."
+ },
+ {
+  "key": "93beca62",
+  "text": "¡Checkpoint! Lee con cuidado: ¿shadowing, mutación, o ninguna de las dos?"
+ },
+ {
+  "key": "53530c88",
+  "text": "Las constantes de Ruby no son realmente constantes. Reasignar una solo te da un warning."
+ },
+ {
+  "key": "db59c09d",
+  "text": "Las constantes de Rust usan const, van en mayúsculas con guiones bajos como en Ruby, y siempre deben tener anotación de tipo."
+ },
+ {
+  "key": "babe8118",
+  "text": "Se evalúan al compilar y nunca pueden cambiar. Constante de verdad significa constante."
+ },
+ {
+  "key": "32142346",
+  "text": "Los bindings let son inmutables. let mut te deja cambiarlos, pero nunca su tipo."
+ },
+ {
+  "key": "c69d7b8d",
+  "text": "Los tipos locales se infieren. Los parámetros y tipos de retorno siempre se escriben."
+ },
+ {
+  "key": "cf448211",
+  "text": "Los enteros tienen tamaño fijo: i32 por defecto, i64 para ids de BD, usize para índices."
+ },
+ {
+  "key": "b6866201",
+  "text": "El shadowing (let x = ... otra vez) crea una variable nueva y puede cambiar su tipo."
+ },
+ {
+  "key": "d9fbaeb3",
+  "text": "La última expresión sin ; es el valor de retorno, como en Ruby."
+ },
+ {
+  "key": "47092709",
+  "text": "Bienvenido al Módulo 2. Esta es la idea que hace que Rust sea Rust: el ownership, o propiedad."
+ },
+ {
+  "key": "c6091152",
+  "text": "Reemplaza al garbage collector en el que confiaste en Ruby durante toda tu carrera. Tómalo con calma, vale la pena."
+ },
+ {
+  "key": "0f7d2d39",
+  "text": "Todo programa tiene que responder una pregunta: ¿cuándo es seguro liberar un pedazo de memoria?"
+ },
+ {
+  "key": "b7440b3b",
+  "text": "Ruby la responde en runtime. El garbage collector revisa periódicamente qué objetos ya nadie referencia y los libera. Nunca piensas en eso, pero lo pagas en pausas y memoria."
+ },
+ {
+  "key": "271ffeb5",
+  "text": "Rust la responde al compilar. Cada valor tiene exactamente un dueño, y en el momento en que ese dueño sale de su scope, la memoria se libera."
+ },
+ {
+  "key": "c1af411d",
+  "text": "Sin collector, sin pausas y sin trabajo extra en runtime. La contabilidad vive en el compilador."
+ },
+ {
+  "key": "0888dc31",
+  "text": "El ownership se resume en tres reglas."
+ },
+ {
+  "key": "64fa4d12",
+  "text": "Uno. Cada valor tiene un dueño, la variable que lo contiene."
+ },
+ {
+  "key": "35d37373",
+  "text": "Dos. Solo puede haber un dueño a la vez. No dos, ni un grupo compartido. Uno."
+ },
+ {
+  "key": "d14da4e0",
+  "text": "Tres. Cuando el dueño sale de su scope, el valor se libera, es decir, su memoria se devuelve de inmediato."
+ },
+ {
+  "key": "4e3d3734",
+  "text": "Cada error del borrow checker que veas en este módulo se reduce a estas tres reglas."
+ },
+ {
+  "key": "03e966ec",
+  "text": "Para entender el ownership necesitas una imagen rápida de dónde viven los valores."
+ },
+ {
+  "key": "785bb8bc",
+  "text": "Los valores simples y de tamaño fijo, como un u treinta y dos, viven en el stack. Son baratos de crear y copiar."
+ },
+ {
+  "key": "d1d487e2",
+  "text": "Un String puede crecer, así que sus caracteres viven en el heap. El stack solo guarda un pequeño encabezado: un puntero, un largo y una capacidad."
+ },
+ {
+  "key": "e0804620",
+  "text": "Cuando main termina, ambos dueños salen de su scope. Rust libera el espacio en el stack y el buffer del heap de inmediato, sin ningún collector."
+ },
+ {
+  "key": "b6274f00",
+  "text": "Aquí es donde Rust realmente se separa de Ruby. Creamos un String llamado s uno. Es dueño de un buffer en el heap que contiene hello."
+ },
+ {
+  "key": "b7da147f",
+  "text": "Ahora asignamos s uno a s dos. En Ruby, ambas variables apuntarían al mismo objeto. Rust copia solo el pequeño encabezado, así que s dos apunta al mismo buffer."
+ },
+ {
+  "key": "10b40df6",
+  "text": "Pero dos dueños de un mismo buffer romperían la regla dos, y el buffer se liberaría dos veces. Así que Rust mueve el ownership. s uno ya no es válido."
+ },
+ {
+  "key": "8facec99",
+  "text": "Usa s uno después del move y el compilador se niega. Borrow of moved value. Vas a ver este error muchas veces, y ahora sabes exactamente qué significa."
+ },
+ {
+  "key": "53fc88bb",
+  "text": "No todo se mueve. Los tipos pequeños y de tamaño fijo, como los enteros, implementan el trait Copy."
+ },
+ {
+  "key": "c1f68915",
+  "text": "Asignar un valor Copy duplica los bits, así que a y b siguen siendo válidos. Por eso los números se sienten igual que en Ruby."
+ },
+ {
+  "key": "e86f3c5c",
+  "text": "Todo lo que es dueño de memoria en el heap, como String, Vec o HashMap, se mueve."
+ },
+ {
+  "key": "18e7aa39",
+  "text": "Cuando de verdad quieres dos copias independientes, llama a clone. Es una copia profunda de los datos, parecida a dup en Ruby, pero explícita y visible en el código."
+ },
+ {
+  "key": "01252b8f",
+  "text": "Checkpoint. Un vector se asigna a una nueva variable. Luego usamos la anterior. ¿Qué pasa?"
+ },
+ {
+  "key": "3d5b057b",
+  "text": "Llamar a una función funciona exactamente igual que asignar. Pasar un String lo mueve al parámetro de la función."
+ },
+ {
+  "key": "72b64904",
+  "text": "El parámetro se convierte en el nuevo dueño, así que el string se libera cuando la función retorna."
+ },
+ {
+  "key": "7b883587",
+  "text": "Por eso llamar a send welcome por segunda vez falla. Email ya se había movido en la primera llamada."
+ },
+ {
+  "key": "a6ef9456",
+  "text": "Tienes tres opciones. Pasar un clone."
+ },
+ {
+  "key": "3aea5860",
+  "text": "Devolver el valor a quien llamó, lo que funciona pero se vuelve incómodo rápido."
+ },
+ {
+  "key": "0ccfcd40",
+  "text": "O, la respuesta real: dejar que la función tome prestado el valor en lugar de ser su dueña. Esa es nuestra próxima lección."
+ },
+ {
+  "key": "15bc0ac9",
+  "text": "Los rubyistas ya conocen una versión de esto. File open con un bloque garantiza que el archivo se cierre cuando termina el bloque."
+ },
+ {
+  "key": "cb141999",
+  "text": "Pero los objetos normales se liberan cuando el garbage collector se acuerda de ellos. No puedes saber cuándo."
+ },
+ {
+  "key": "238623f5",
+  "text": "En Rust, cada scope se comporta como ese bloque de archivo. Cuando f sale de su scope, se hace drop y el archivo se cierra ahí mismo."
+ },
+ {
+  "key": "2e0539ff",
+  "text": "Lo mismo aplica a todo: memoria, sockets, conexiones a la base de datos, locks de mutex. La limpieza es determinista."
+ },
+ {
+  "key": "cab6b909",
+  "text": "Cada valor tiene un solo dueño a la vez, y se libera cuando ese dueño sale de su scope."
+ },
+ {
+  "key": "0d0f7ca6",
+  "text": "La asignación y las llamadas a funciones mueven valores con memoria en el heap como String y Vec. Usar la variable anterior es el error E0382."
+ },
+ {
+  "key": "d1aed744",
+  "text": "Enteros, floats, bool, char y las referencias compartidas son Copy, así que se duplican en vez de moverse."
+ },
+ {
+  "key": "cb656fb6",
+  "text": ".clone() hace una copia profunda explícita. Está bien usarlo mientras aprendes."
+ },
+ {
+  "key": "d97f712f",
+  "text": "El drop es determinista, como un bloque File.open que siempre se cierra."
+ },
+ {
+  "key": "1f06433d",
+  "text": "Mover valores por todos lados sería agotador. La mayoría de las veces, una función solo quiere mirar algo, o ajustarlo, y devolverlo."
+ },
+ {
+  "key": "6ab2b75e",
+  "text": "Eso es el borrowing, o préstamo. Es la habilidad cotidiana más importante en Rust."
+ },
+ {
+  "key": "2eecc3e5",
+  "text": "Ruby pasa referencias a objetos en todas partes. Cualquier método que reciba tu hash puede cambiarlo."
+ },
+ {
+  "key": "dd2dee76",
+  "text": "Así, un service object de apariencia inofensiva puede mutar en silencio los params de quien lo llama. Todos hemos depurado esto alguna vez."
+ },
+ {
+  "key": "b95f5c12",
+  "text": "En Rust, la firma de la función te lo dice. Ampersand mut significa que esta función puede cambiar tu valor."
+ },
+ {
+  "key": "445faea1",
+  "text": "Un ampersand simple significa solo lectura, y el compilador lo garantiza. La mutación pasa a ser parte del contrato."
+ },
+ {
+  "key": "2725b79a",
+  "text": "En lugar de entregar el ownership, podemos prestar una referencia. La función recibe un ampersand String."
+ },
+ {
+  "key": "9cfed339",
+  "text": "Post es el dueño del buffer en el heap."
+ },
+ {
+  "key": "421bd028",
+  "text": "Llamamos a word count con ampersand post. Eso crea una referencia: un puntero a post que no es dueño de nada."
+ },
+ {
+  "key": "f19fdbf4",
+  "text": "Cuando la función retorna, el préstamo termina y la referencia desaparece. El String no se libera, porque la referencia nunca fue su dueña."
+ },
+ {
+  "key": "db096065",
+  "text": "Así que post sigue siendo nuestro, y lo podemos seguir usando. Sin clone."
+ },
+ {
+  "key": "b0718f22",
+  "text": "Cuando una función necesita cambiar algo, pide un préstamo mutable: ampersand mut."
+ },
+ {
+  "key": "aa8b6f57",
+  "text": "Quien llama tiene que aceptarlo dos veces. La variable debe declararse mut, y la llamada escribe ampersand mut de forma explícita."
+ },
+ {
+  "key": "9ec68cc2",
+  "text": "Al leer el código, ves cada lugar que podría cambiar tags. Compáralo con buscar métodos bang en Ruby."
+ },
+ {
+  "key": "50830d38",
+  "text": "Todo el borrowing se reduce a estas reglas."
+ },
+ {
+  "key": "1e585c4e",
+  "text": "En cualquier momento, puedes tener todas las referencias compartidas, de solo lectura, que quieras."
+ },
+ {
+  "key": "da6ffe71",
+  "text": "O puedes tener exactamente una referencia mutable, sin lectores al mismo tiempo. Nunca ambas."
+ },
+ {
+  "key": "0e224ae7",
+  "text": "Y una referencia nunca debe vivir más que el valor al que apunta."
+ },
+ {
+  "key": "b3e0b6cb",
+  "text": "Si has usado un lock de lectura y escritura en una base de datos, es la misma idea. El compilador lo verifica, así que no cuesta nada en runtime y los data races no pueden ocurrir."
+ },
+ {
+  "key": "d9fc007c",
+  "text": "Este es el error clásico del borrow checker. Un vector, y una referencia a su primer elemento."
+ },
+ {
+  "key": "d4e64c69",
+  "text": "Luego hacemos push. Pero el push puede necesitar más espacio, así que el vector puede realocar: copiar todo a un buffer nuevo y más grande, y liberar el anterior."
+ },
+ {
+  "key": "cd52b1d4",
+  "text": "Ahora first apunta a memoria liberada. En C eso es un bug de uso después de liberar. Un agujero de seguridad."
+ },
+ {
+  "key": "a415425c",
+  "text": "Rust se niega a compilarlo. No puedes mutar v mientras un préstamo compartido de v siga en uso."
+ },
+ {
+  "key": "5ea68fff",
+  "text": "Hay dos soluciones comunes."
+ },
+ {
+  "key": "61d71892",
+  "text": "Uno. Copia el valor afuera en vez de pedirlo prestado. Un i treinta y dos es Copy, así que no queda ninguna referencia viva."
+ },
+ {
+  "key": "945d62bd",
+  "text": "Dos. Reordena tu código. Un préstamo dura solo hasta su último uso, no hasta el final del bloque."
+ },
+ {
+  "key": "486e3774",
+  "text": "Así que cuando hacemos push del cinco, nadie está mirando el vector, y el compilador queda contento."
+ },
+ {
+  "key": "cb070c70",
+  "text": "Checkpoint. Dos préstamos mutables del mismo string. ¿Lo permitirá el compilador?"
+ },
+ {
+  "key": "08e8259a",
+  "text": "Un tipo más de préstamo: los slices. Un string slice, ampersand str, toma prestada una parte o todo un string."
+ },
+ {
+  "key": "3c1b7f6f",
+  "text": "La palabra que se devuelve no es un string nuevo. Apunta directamente al texto original. Sin copias."
+ },
+ {
+  "key": "c2c47c5a",
+  "text": "Los slices de arreglos funcionan igual para los vectores."
+ },
+ {
+  "key": "21bee2d7",
+  "text": "Una referencia a un String se convierte automáticamente en un string slice, y una referencia a un Vec se convierte en un slice."
+ },
+ {
+  "key": "6835c6c7",
+  "text": "Así que lo idiomático es aceptar ampersand str y slices en tus funciones. Funcionan con más entradas, incluidos los literales de texto."
+ },
+ {
+  "key": "b2244004",
+  "text": "ref valor presta una referencia de solo lectura. El dueño conserva el ownership y puede usar el valor después."
+ },
+ {
+  "key": "01ef8c19",
+  "text": "ref mut valor presta acceso exclusivo de escritura. Requiere let mut en el dueño."
+ },
+ {
+  "key": "1363c030",
+  "text": "Regla: muchas ref T o una ref mut T a la vez. Es un lock de lectura/escritura al compilar, así que no hay data races."
+ },
+ {
+  "key": "fcee5378",
+  "text": "Un préstamo dura hasta su último uso. Reordenar el código arregla la mayoría de los errores de borrowing."
+ },
+ {
+  "key": "91a78b04",
+  "text": "Los slices (ref str, and [T]) toman prestada una parte de una colección. Prefiérelos como tipos de parámetro."
+ },
+ {
+  "key": "c050d0c7",
+  "text": "Las dos últimas piezas del rompecabezas del ownership. Los lifetimes, que mantienen honestas a las referencias."
+ },
+ {
+  "key": "4dd2d0ec",
+  "text": "Y los smart pointers como Rc y RefCell, que te devuelven parte de la flexibilidad para compartir a la que estás acostumbrado en Ruby."
+ },
+ {
+  "key": "167edb95",
+  "text": "Aquí está el bug. r se declara fuera de un bloque, y dentro del bloque toma prestado x."
+ },
+ {
+  "key": "db757936",
+  "text": "Pero x se libera en la llave de cierre. Después de eso, r apuntaría a memoria liberada."
+ },
+ {
+  "key": "0cfeb7e0",
+  "text": "En Ruby esto no puede pasar. El garbage collector mantiene vivo a x mientras alguien lo referencie."
+ },
+ {
+  "key": "388bc740",
+  "text": "Rust no tiene collector, así que el compilador debe probar que cada referencia se queda dentro del lifetime de sus datos."
+ },
+ {
+  "key": "4b192a15",
+  "text": "Aquí no puede. Error, x no vive lo suficiente. El tramo donde una referencia es válida se llama su lifetime, o tiempo de vida."
+ },
+ {
+  "key": "f0b71081",
+  "text": "Normalmente el compilador deduce los lifetimes solo. Pero mira esta función. Devuelve una de dos referencias."
+ },
+ {
+  "key": "29c17c94",
+  "text": "¿De cuál entrada toma prestado el resultado? El compilador no lo puede saber solo con la firma, así que lo anotamos."
+ },
+ {
+  "key": "9fce4e92",
+  "text": "Tick a es un parámetro de lifetime. Es un nombre para alguna región de código, declarado entre ángulos como un genérico."
+ },
+ {
+  "key": "3f420814",
+  "text": "Usarlo en ambas entradas y en la salida dice que el resultado es válido solo mientras ambas entradas lo sean."
+ },
+ {
+  "key": "bfc11407",
+  "text": "Importante: las anotaciones no cambian cuánto vive nada. Solo describen relaciones para que el compilador las verifique."
+ },
+ {
+  "key": "827c2842",
+  "text": "Buenas noticias. Gracias a las reglas de elisión de lifetimes, casi nunca escribes anotaciones."
+ },
+ {
+  "key": "381d7a26",
+  "text": "Si una función recibe una sola referencia y devuelve una, la salida obviamente toma prestado de esa entrada."
+ },
+ {
+  "key": "229b86ff",
+  "text": "En los métodos, se asume que una referencia devuelta toma prestado de self. Eso cubre los getters."
+ },
+ {
+  "key": "df7c466c",
+  "text": "Si no se devuelve ninguna referencia, no hay nada que relacionar."
+ },
+ {
+  "key": "020def55",
+  "text": "Solo cuando es realmente ambiguo necesitas anotar, y el error del compilador te lo va a señalar."
+ },
+ {
+  "key": "b5df7d7f",
+  "text": "Los lifetimes aparecen sobre todo en los structs. El camino fácil es un struct que sea dueño de sus datos, con campos String en vez de string slices."
+ },
+ {
+  "key": "b1c3bccf",
+  "text": "Un struct puede contener referencias, pero entonces necesita un parámetro de lifetime, y nunca puede vivir más que los datos que toma prestados."
+ },
+ {
+  "key": "f6bff2e6",
+  "text": "El consejo para devs de aplicaciones: sé dueño de tus datos. Trata tus structs como modelos de ActiveRecord dueños de sus atributos, y usa structs con préstamos solo cuando el profiling te lo pida."
+ },
+ {
+  "key": "262e4a1e",
+  "text": "A veces la regla de un solo dueño es demasiado estricta. Piensa en un objeto de configuración que comparten muchas partes de la app. Rust tiene smart pointers para esto."
+ },
+ {
+  "key": "ee2bd487",
+  "text": "Box pone un solo valor en el heap. Sigue teniendo un dueño, y es útil para tipos recursivos y trait objects."
+ },
+ {
+  "key": "e690469c",
+  "text": "Rc significa conteo de referencias. Muchos dueños comparten un valor, y se libera cuando se va el último dueño."
+ },
+ {
+  "key": "5604d414",
+  "text": "Arc es la versión atómica de Rc, segura para compartir entre hilos. La vas a usar todo el tiempo en servidores web async."
+ },
+ {
+  "key": "f3ee2281",
+  "text": "RefCell te deja mutar a través de una referencia compartida. Las reglas de borrowing se verifican en runtime en vez de al compilar. Mutex hace lo mismo entre hilos."
+ },
+ {
+  "key": "ef5248f4",
+  "text": "Rc new pone la configuración en el heap, junto a un contador de cuántos dueños tiene. Por ahora, uno."
+ },
+ {
+  "key": "1b28f0b2",
+  "text": "Rc clone no copia la configuración. Copia el puntero y sube el contador. Dos dueños."
+ },
+ {
+  "key": "6cb34413",
+  "text": "Y un tercero."
+ },
+ {
+  "key": "f36ed668",
+  "text": "Liberar un dueño baja el contador. Cuando llega a cero, se libera la configuración. Como un pequeño garbage collector predecible, solo para este valor."
+ },
+ {
+  "key": "0e6ae1bb",
+  "text": "Rc te da muchos dueños, pero solo acceso compartido de solo lectura. Para mutar datos compartidos, envuélvelos en un RefCell."
+ },
+ {
+  "key": "702c2ea6",
+  "text": "borrow mut entrega un préstamo mutable en runtime. Si ya hay uno activo, el programa hace panic en vez de fallar al compilar."
+ },
+ {
+  "key": "2f8d62a9",
+  "text": "Todo junto, así funciona básicamente cualquier objeto de Ruby: compartido por muchas referencias, mutable por cualquiera y limpiado automáticamente."
+ },
+ {
+  "key": "d13a694e",
+  "text": "Rust te hace pedir esa flexibilidad de forma explícita, así que solo la pagas donde la necesitas."
+ },
+ {
+  "key": "615afc9f",
+  "text": "Checkpoint. Configuración compartida, muchos hilos. ¿Qué smart pointer?"
+ },
+ {
+  "key": "6377fa54",
+  "text": "Los lifetimes evitan referencias colgantes. Una referencia nunca puede vivir más que el valor que toma prestado."
+ },
+ {
+  "key": "56fc430d",
+  "text": "'a describe cómo se relacionan entradas y salidas. Gracias a la elisión, casi nunca la escribes."
+ },
+ {
+  "key": "3c32cb4e",
+  "text": "Prefiere structs dueños de sus datos (String, no ref str)."
+ },
+ {
+  "key": "b8735b26",
+  "text": "Rc/Arc dan ownership compartido con conteo de referencias, y Arc funciona entre hilos."
+ },
+ {
+  "key": "6e78f1dd",
+  "text": "RefCell/Mutex permiten mutar a través de referencias compartidas. Rc RefCell T es básicamente un objeto de Ruby."
+ },
+ {
+  "key": "323774e9",
+  "text": "En Ruby, todo es un objeto y todo tiene una clase. Rust no tiene clases en absoluto."
+ },
+ {
+  "key": "85472088",
+  "text": "En cambio, divide una clase en dos piezas: un struct para los datos y un bloque impl para el comportamiento."
+ },
+ {
+  "key": "ef77b6c5",
+  "text": "Este es un objeto Ruby simple. Las variables de instancia aparecen la primera vez que initialize las asigna."
+ },
+ {
+  "key": "b7a7fffc",
+  "text": "En Rust, los campos se declaran de antemano, cada uno con su tipo. Esto es un struct. Son datos puros, todavía sin métodos."
+ },
+ {
+  "key": "1d043c49",
+  "text": "Lo construyes con un struct literal. Hay que darle un valor a cada campo. Rust no tiene valores nil implícitos por defecto."
+ },
+ {
+  "key": "0a300adb",
+  "text": "Fíjate que no hay attribute readers. La visibilidad se decide campo por campo, y lo veremos en un minuto."
+ },
+ {
+  "key": "b05dd1d2",
+  "text": "El comportamiento va en un bloque impl para el tipo. Puedes tener varios bloques impl, incluso en archivos distintos."
+ },
+ {
+  "key": "3d45db16",
+  "text": "Una función sin self es una función asociada, como un método de clase en Ruby. Por convención, new es el constructor. Rust no tiene un initialize especial."
+ },
+ {
+  "key": "80be5424",
+  "text": "Los métodos reciben self como primer parámetro, y la forma en que lo reciben importa. Ampersand self toma prestado el valor en modo solo lectura."
+ },
+ {
+  "key": "276a830e",
+  "text": "Ampersand mut self lo toma prestado de forma mutable, así que el método puede cambiar campos. Quien lo llama debe tener una variable mutable."
+ },
+ {
+  "key": "567d636b",
+  "text": "Y self a secas toma ownership. El valor se consume, y quien lo llamó ya no puede usarlo después."
+ },
+ {
+  "key": "61dcca04",
+  "text": "Pongámoslos lado a lado. Ampersand self es un lector: mira pero nunca toca."
+ },
+ {
+  "key": "8206470a",
+  "text": "Ampersand mut self es para métodos que cambian el estado. En Ruby quizás los marcarías con un bang."
+ },
+ {
+  "key": "743991b6",
+  "text": "Self a secas consume el valor. Ruby no tiene un equivalente real, porque el garbage collector mantiene todo vivo."
+ },
+ {
+  "key": "0443b476",
+  "text": "Y una función sin self es un método de clase, que se llama con dos puntos dobles."
+ },
+ {
+  "key": "590ef349",
+  "text": "Llamar métodos se ve igual que en Ruby, con un punto. Rust hace el préstamo automáticamente al llamarlos."
+ },
+ {
+  "key": "08ce5895",
+  "text": "Todo objeto de Ruby trae inspect, dup y doble igual gratis. Un struct de Rust empieza sin ninguno de ellos."
+ },
+ {
+  "key": "28c98ab8",
+  "text": "Los activas con el atributo derive. El compilador escribe la implementación por ti."
+ },
+ {
+  "key": "accc75b5",
+  "text": "Debug es inspect. Te permite imprimir el struct con dos puntos y signo de interrogación."
+ },
+ {
+  "key": "ff6cc7d0",
+  "text": "Clone es dup. Las copias siempre son explícitas con punto clone, así que ves dónde ocurren."
+ },
+ {
+  "key": "020bf885",
+  "text": "PartialEq te da doble igual comparando cada campo. Default construye una instancia con valores cero."
+ },
+ {
+  "key": "2bd71cbc",
+  "text": "Rails se apoya en la herencia. Tu modelo es un ApplicationRecord, y quizás Admin hereda de User."
+ },
+ {
+  "key": "fd517ca2",
+  "text": "Single table inheritance agrega otra capa más."
+ },
+ {
+  "key": "d80be203",
+  "text": "Los structs de Rust no pueden heredar de nada. En cambio, compones: un struct contiene otros structs como campos."
+ },
+ {
+  "key": "a4e65d9e",
+  "text": "El comportamiento compartido viene de los traits, que veremos en la lección tres. Piensa en \"tiene un\" y \"puede hacer\", nunca en \"es un\"."
+ },
+ {
+  "key": "3e1e451a",
+  "text": "Checkpoint. ¿Qué sabor de self te deja mutar mientras quien llama conserva el valor?"
+ },
+ {
+  "key": "558dd526",
+  "text": "En Ruby todo es público a menos que escribas private. Rust lo invierte. Todo es privado a menos que lo marques con pub."
+ },
+ {
+  "key": "e26be980",
+  "text": "Eso incluye los campos. Un campo privado solo lo puede tocar el código del mismo módulo. Fuera de él, no puedes leer el campo, ni siquiera construir el struct con un literal. Pasas por un constructor pub como new, así tus invariantes quedan protegidas."
+ },
+ {
+  "key": "13d36302",
+  "text": "Con los métodos pasa lo mismo. Una pub fn es tu API pública, y el resto son helpers privados."
+ },
+ {
+  "key": "2fc8b6ea",
+  "text": "No hay autoloading de Zeitwerk. Declaras el árbol de módulos con mod, y traes nombres al scope con use, un poco como require."
+ },
+ {
+  "key": "ed002683",
+  "text": "Privado por defecto, y explícito sobre dónde vive el código. Los refactors se vuelven mucho más seguros."
+ },
+ {
+  "key": "52b55d8d",
+  "text": "struct declara campos con tipo de antemano, y hay que asignar cada campo al construir uno."
+ },
+ {
+  "key": "6ff0f057",
+  "text": "impl Type { ... } contiene los métodos. Las funciones sin self son funciones asociadas, como métodos de clase: User new(..)."
+ },
+ {
+  "key": "0f7f4c2f",
+  "text": "ref self lee, ref mut self modifica, y self consume el valor."
+ },
+ {
+  "key": "99acfa6d",
+  "text": "#[derive(Debug, Clone, PartialEq, Default)] te da inspect, dup, == y valores por defecto."
+ },
+ {
+  "key": "6902be4c",
+  "text": "Sin herencia: compón structs y comparte comportamiento con traits."
+ },
+ {
+  "key": "b2a22f88",
+  "text": "Los items y campos son privados a menos que se marquen pub. Los módulos se declaran con mod y se importan con use."
+ },
+ {
+  "key": "e222d324",
+  "text": "Si recuerdas una sola característica de Rust de este curso, que sea esta. Enums más match."
+ },
+ {
+  "key": "7178b684",
+  "text": "Reemplazan los enums de Rails, las máquinas de estado, case when y nil, todo con una sola idea."
+ },
+ {
+  "key": "cd110155",
+  "text": "Un enum de Rails asocia nombres a enteros en la base de datos. Pides el status y te devuelve un string."
+ },
+ {
+  "key": "c12eb649",
+  "text": "Un enum de Rust es un tipo que es exactamente una de un conjunto fijo de variantes."
+ },
+ {
+  "key": "922a1af6",
+  "text": "Un error de tipeo como Status dos puntos dobles Payed es un error de compilación, no un nil silencioso ni un ArgumentError en runtime."
+ },
+ {
+  "key": "71be2930",
+  "text": "Aquí es donde los enums de Rust dejan atrás a los de Rails. Cada variante puede llevar sus propios datos."
+ },
+ {
+  "key": "adc5a231",
+  "text": "Un pago con tarjeta tiene los últimos cuatro dígitos y una marca. El efectivo no tiene nada."
+ },
+ {
+  "key": "cf4131e0",
+  "text": "Las variantes pueden tener campos sin nombre, como una tupla, o campos con nombre, como un struct."
+ },
+ {
+  "key": "6c54f297",
+  "text": "En Rails quizás usarías single table inheritance, con la mitad de las columnas en null para cada tipo. Aquí es imposible construir una combinación inválida."
+ },
+ {
+  "key": "ddcbc850",
+  "text": "El case when de Ruby devuelve nil en silencio cuando nada coincide. Olvidas una rama y no te enteras hasta producción."
+ },
+ {
+  "key": "7cd0c6e7",
+  "text": "El match de Rust también es una expresión, así que devuelve un valor. Cada rama es un patrón, una flecha gruesa y una expresión."
+ },
+ {
+  "key": "0834b409",
+  "text": "Los patrones desestructuran. Esta rama saca last four de la tarjeta, y el punto punto ignora los demás campos."
+ },
+ {
+  "key": "36fb1e1f",
+  "text": "Lo más importante: match debe ser exhaustivo. Si dejas fuera una variante, el código no compila."
+ },
+ {
+  "key": "4e044d40",
+  "text": "Por esto los equipos se enamoran de Rust. Producto pide un nuevo estado para las órdenes: reembolsada."
+ },
+ {
+  "key": "bfd37691",
+  "text": "Agregas la variante y corres cargo check. Cada match sobre Status que no maneja refunded ahora es un error, con su archivo y línea."
+ },
+ {
+  "key": "5b4a2b50",
+  "text": "Para una máquina de estados, eso vale oro. No puedes publicar un estado nuevo manejado a medias."
+ },
+ {
+  "key": "98ff9082",
+  "text": "¿Recuerdas Option de la lección uno? No es magia. Es un enum simple con dos variantes: Some con un valor, o None."
+ },
+ {
+  "key": "c2689fec",
+  "text": "Como Option de User es un tipo distinto de User, no puedes llamar por accidente un método de usuario sobre un valor que podría faltar."
+ },
+ {
+  "key": "e53c9b77",
+  "text": "Lo abres con match, manejando ambos casos de forma explícita."
+ },
+ {
+  "key": "b6720eef",
+  "text": "Cuando solo te importa un caso, if let es la forma corta. Se lee como el if user igual find by de Ruby."
+ },
+ {
+  "key": "f33e2f81",
+  "text": "Rara vez escribirás un match completo sobre un Option. Hay un método para casi cada modismo de Ruby que conoces."
+ },
+ {
+  "key": "b3d69c84",
+  "text": "El operador de navegación segura se convierte en map. Los valores de respaldo con doble barra se convierten en unwrap or."
+ },
+ {
+  "key": "73991642",
+  "text": "present con signo de interrogación se convierte en is some. find by con bang, que lanza una excepción, se convierte en expect, que hace panic con tu mensaje."
+ },
+ {
+  "key": "b097b34d",
+  "text": "La guard clause, return unless user, se convierte en let else. Asigna el valor o sale de la función."
+ },
+ {
+  "key": "9d7ab834",
+  "text": "Y dentro de una función que devuelve un Option, el operador signo de interrogación encadena búsquedas como una cadena de navegación segura."
+ },
+ {
+  "key": "4806d7ad",
+  "text": "Checkpoint. Sigue el None a través de la cadena."
+ },
+ {
+  "key": "10ab07f6",
+  "text": "Los patrones son mucho más ricos que case when. Puedes hacer match sobre una tupla de valores a la vez."
+ },
+ {
+  "key": "7f05fac3",
+  "text": "Los rangos coinciden con números, y los literales de string coinciden con strings."
+ },
+ {
+  "key": "4026ce24",
+  "text": "Un if después de un patrón es un guard, una condición extra para esa rama. Una barra vertical significa o."
+ },
+ {
+  "key": "66a78516",
+  "text": "El guion bajo atrapa todo lo demás. Las ramas se revisan de arriba hacia abajo, como las cláusulas when."
+ },
+ {
+  "key": "5ccd58ec",
+  "text": "Y cuando solo necesitas un sí o un no, la macro matches devuelve un booleano. Es perfecta para predicados como can cancel."
+ },
+ {
+  "key": "71eabbd3",
+  "text": "Un valor enum es exactamente una de sus variantes, y las variantes pueden llevar datos tipo tupla o tipo struct."
+ },
+ {
+  "key": "0689d737",
+  "text": "match es una expresión, desestructura patrones y se verifica que sea exhaustivo."
+ },
+ {
+  "key": "5d69c458",
+  "text": "Agregar una variante convierte cada match sin manejarla en un error de compilación, ideal para máquinas de estado."
+ },
+ {
+  "key": "e9cdb020",
+  "text": "Option T = Some(T) | None. Usa if let, let ... else, map, unwrap_or y ?."
+ },
+ {
+  "key": "c6d835f3",
+  "text": "Los patrones admiten tuplas, rangos, |, guards (if), .. y _. matches! devuelve un bool."
+ },
+ {
+  "key": "2f588d1d",
+  "text": "Ruby funciona con duck typing. Si responde al método, es suficiente. Si no responde, te enteras en runtime."
+ },
+ {
+  "key": "b5fa43c6",
+  "text": "Rust mantiene esa flexibilidad con traits, y verifica cada pato en tiempo de compilación."
+ },
+ {
+  "key": "14d29a58",
+  "text": "En Ruby, dos clases sin relación pueden tener ambas un método deliver. El código que llama a deliver funciona con cualquiera, hasta que alguien pasa un objeto que no lo tiene."
+ },
+ {
+  "key": "f72e927a",
+  "text": "En Rust escribes el contrato. Un trait lista las firmas de métodos que un tipo debe proveer."
+ },
+ {
+  "key": "a06ac4c5",
+  "text": "Luego cada tipo se suma con impl Notifier for Email, y el compilador verifica que provea cada método requerido."
+ },
+ {
+  "key": "40fffa62",
+  "text": "Los módulos de Ruby te dan mixins. Sluggable asume en silencio que quien lo incluya tiene un método title."
+ },
+ {
+  "key": "750a5016",
+  "text": "Un trait de Rust puede hacer lo mismo con un método por defecto, y la suposición se vuelve explícita. Title es un método requerido."
+ },
+ {
+  "key": "e69f9761",
+  "text": "Slug tiene cuerpo, así que cada implementador lo recibe gratis, igual que con include."
+ },
+ {
+  "key": "cc85d7a5",
+  "text": "Post solo implementa title, y recibe slug automáticamente. Olvida title y es un error de compilación, no un NoMethodError."
+ },
+ {
+  "key": "d2d8b533",
+  "text": "Ahora escribe una función que funcione con cualquier notificador. Eso es un genérico, con un trait bound."
+ },
+ {
+  "key": "f36e7724",
+  "text": "T dos puntos Notifier se lee como \"cualquier tipo T que implemente Notifier\". El \"responde a deliver\" implícito de Ruby ahora es explícito."
+ },
+ {
+  "key": "ad29ae13",
+  "text": "impl Notifier en la posición del argumento es una forma abreviada de lo mismo."
+ },
+ {
+  "key": "3f0ea355",
+  "text": "Combina bounds con un signo más, y muévelos a una cláusula where cuando se alarguen."
+ },
+ {
+  "key": "e28f2227",
+  "text": "Pasa algo que no hace cuac, y el compilador nombra el trait que falta."
+ },
+ {
+  "key": "39f38b4f",
+  "text": "Los genéricos fijan un tipo concreto en tiempo de compilación. Pero a veces quieres una lista de tipos distintos, como un array de notificadores en Ruby."
+ },
+ {
+  "key": "4950639e",
+  "text": "Para eso, usa dyn Notifier: un trait object. Cada valor va en una caja en el heap, porque tienen tamaños distintos."
+ },
+ {
+  "key": "eaafb967",
+  "text": "Las llamadas se despachan en runtime mediante una tabla de búsqueda. Es lo más parecido al dispatch dinámico de Ruby, y aun así tiene verificación de tipos."
+ },
+ {
+  "key": "cbe25b7c",
+  "text": "Regla práctica: usa genéricos por defecto, y recurre a dyn cuando necesites una colección mixta o un punto de extensión para plugins."
+ },
+ {
+  "key": "1d720e31",
+  "text": "Checkpoint. Un vector, distintos tipos de notificador. ¿Qué va adentro?"
+ },
+ {
+  "key": "b57f4229",
+  "text": "Gran parte del protocolo de objetos de Ruby se mapea a traits estándar."
+ },
+ {
+  "key": "9f87e4b0",
+  "text": "Display es to s. Impleméntalo, y tu tipo funciona con llaves en los format strings."
+ },
+ {
+  "key": "b3be8900",
+  "text": "From e Into son conversiones. Implementa From, y obtienes into gratis en la otra dirección."
+ },
+ {
+  "key": "10f1da1c",
+  "text": "Debug es inspect. PartialEq y Ord son el doble igual y el operador nave espacial, como Comparable."
+ },
+ {
+  "key": "66003e9a",
+  "text": "Hash y Eq permiten que un tipo sea clave de un hash map. Y Serialize de serde es tu as json."
+ },
+ {
+  "key": "e2fe91f4",
+  "text": "Implementemos dos de estos para un tipo Money."
+ },
+ {
+  "key": "d4a60c61",
+  "text": "Display tiene un solo método, fmt. Escribes en un formatter, igual que construirías un string en to s."
+ },
+ {
+  "key": "5e3650bb",
+  "text": "From i64 dice cómo construir un Money a partir de un entero simple de centavos."
+ },
+ {
+  "key": "40558abb",
+  "text": "Ahora podemos llamar into sobre un entero, e imprimir Money directamente con llaves."
+ },
+ {
+  "key": "e0b7acab",
+  "text": "Finalmente, el trait que vas a derivar más que cualquier otro: Serialize y Deserialize de serde."
+ },
+ {
+  "key": "9aadbd62",
+  "text": "Derívalos en un struct, y serde genera el código JSON en tiempo de compilación. Sin reflexión, y muy rápido."
+ },
+ {
+  "key": "3ee04a55",
+  "text": "Los atributos personalizan la salida, como renombrar un campo a camel case."
+ },
+ {
+  "key": "a7a92509",
+  "text": "El parseo tiene tipos. Si el JSON tiene la forma equivocada, obtienes un error en vez de un hash con nils sorpresa."
+ },
+ {
+  "key": "9dcddba7",
+  "text": "Un trait declara métodos que un tipo debe proveer. impl Trait for Type adhiere el tipo al trait, y el compilador lo verifica."
+ },
+ {
+  "key": "980325f3",
+  "text": "Los métodos por defecto de un trait se comportan como un módulo de Ruby incluido con include."
+ },
+ {
+  "key": "3d2aba91",
+  "text": "Los genéricos con trait bounds (fn f T: Notifier , impl Notifier) se compilan por tipo, sin costo en runtime."
+ },
+ {
+  "key": "cd6e942b",
+  "text": "Box dyn Trait permite colecciones heterogéneas con dispatch en runtime."
+ },
+ {
+  "key": "36fe1102",
+  "text": "Implementa Display para {}/to_string(), y From para obtener .into(). Deriva Serialize/Deserialize para JSON."
+ },
+ {
+  "key": "e271af74",
+  "text": "En Ruby, cualquier cosa puede lanzar una excepción, y te enteras leyendo la documentación o cuando te despiertan de madrugada."
+ },
+ {
+  "key": "624e0647",
+  "text": "Rust no tiene excepciones. Una función que puede fallar lo dice en su firma, y el compilador se asegura de que lo manejes."
+ },
+ {
+  "key": "8d510f39",
+  "text": "Aquí tienes un patrón conocido de Ruby. Integer lanza una excepción con una entrada inválida, así que la rescatamos y retornamos nil."
+ },
+ {
+  "key": "168c3db7",
+  "text": "Nada en la firma del método avisa que puede fallar. Tienes que leer el cuerpo para saberlo."
+ },
+ {
+  "key": "d03e5134",
+  "text": "En Rust, el tipo de retorno lo dice en voz alta. Esto retorna un Result: o una edad de tipo u8, o un ParseIntError."
+ },
+ {
+  "key": "8968c121",
+  "text": "Quien la llama maneja ambos casos con match. Ok lleva el valor, Err lleva el error. Si olvidas una rama, no compila."
+ },
+ {
+  "key": "48266152",
+  "text": "Aquí no hay magia. Result es un enum común y corriente de la librería estándar, con dos variantes."
+ },
+ {
+  "key": "fabc5aae",
+  "text": "Ok envuelve el valor de éxito."
+ },
+ {
+  "key": "13dfcbb3",
+  "text": "Err envuelve el fallo. Son solo datos que retornas. No se lanza nada y el stack no se desenrolla."
+ },
+ {
+  "key": "8e4d4d6d",
+  "text": "Como vive en el tipo, cada llamador ve exactamente cómo puede fallar una función. Es documentación que el compilador hace cumplir."
+ },
+ {
+  "key": "f68a1237",
+  "text": "Hacer match a mano sobre cada Result se vuelve ruidoso muy rápido. Mira esto: cuatro líneas solo para decir \"si falló, pasa el error hacia arriba\"."
+ },
+ {
+  "key": "115bf027",
+  "text": "El operador signo de interrogación hace exactamente eso con un solo carácter."
+ },
+ {
+  "key": "67c2f4b7",
+  "text": "Si el Result es Ok, el signo de interrogación extrae el valor y sigue. Si es Err, retorna ese error de la función actual de inmediato."
+ },
+ {
+  "key": "fbec7222",
+  "text": "Por eso el signo de interrogación solo funciona dentro de una función que retorna un Result. Tienes la comodidad de las excepciones, con cada salida marcada."
+ },
+ {
+  "key": "cef452cd",
+  "text": "Checkpoint. El signo de interrogación está ahí mismo. Entonces, ¿por qué se queja el compilador?"
+ },
+ {
+  "key": "72b9723f",
+  "text": "A veces sabes que un fallo es un bug, no una situación que manejar. Rails tiene métodos bang para eso, y Rust tiene unwrap y expect."
+ },
+ {
+  "key": "9b0cb3bc",
+  "text": "unwrap toma el valor Ok o hace panic. expect hace lo mismo, con un mensaje que tú eliges. Es como save con bang."
+ },
+ {
+  "key": "83823de6",
+  "text": "Cuando fallar es un resultado normal, como con find_by, usa el signo de interrogación o match. Y unwrap_or es tu valor por defecto con doble barra."
+ },
+ {
+  "key": "315d25bd",
+  "text": "Leer la configuración al arrancar es un buen lugar para expect. Si el puerto es basura, falla ruidosamente antes de recibir tráfico."
+ },
+ {
+  "key": "212f2d1a",
+  "text": "Pero dentro de un request, nunca hagas unwrap del input del usuario. Un solo parámetro malo haría panic en el handler. Mejor propaga el error."
+ },
+ {
+  "key": "1aee5e2e",
+  "text": "En Ruby modelas los tipos de fallo con una jerarquía de clases de excepción, y las rescatas una por una."
+ },
+ {
+  "key": "5f0a3fdc",
+  "text": "En Rust, la versión idiomática es un solo enum, con una variante por cada fallo."
+ },
+ {
+  "key": "adaa907f",
+  "text": "Las variantes pueden llevar datos, como el largo mínimo de la contraseña, o un error de más bajo nivel que causó este."
+ },
+ {
+  "key": "0d964c51",
+  "text": "Implementar From permite que el signo de interrogación convierta automáticamente. Un error de io dentro de signup sale convertido en un SignupError."
+ },
+ {
+  "key": "ee9429aa",
+  "text": "Y como es un enum, un match sobre SignupError debe cubrir todas las variantes. Agrega un fallo nuevo y el compilador te muestra cada llamador que debes actualizar."
+ },
+ {
+  "key": "8271364f",
+  "text": "Escribir a mano las implementaciones de Display y From es puro boilerplate. Dos crates eliminan casi todo."
+ },
+ {
+  "key": "eb9b38d7",
+  "text": "thiserror deriva todo para tus enums de error. El atributo error es el mensaje, y el atributo from genera la conversión From."
+ },
+ {
+  "key": "683b06be",
+  "text": "Úsalo en librerías y en código de dominio, donde quien llama necesita hacer match sobre fallos específicos, como rescatar una clase de excepción concreta."
+ },
+ {
+  "key": "de5630b3",
+  "text": "anyhow es para código de aplicación. Su Result acepta cualquier error, y context agrega una pista legible, como el mensaje de una excepción envuelta."
+ },
+ {
+  "key": "18719271",
+  "text": "La regla general es simple."
+ },
+ {
+  "key": "182a0068",
+  "text": "Entonces, ¿cuándo retornas un Result y cuándo haces panic?"
+ },
+ {
+  "key": "03c30cb4",
+  "text": "Retorna un Result para todo lo que razonablemente puede pasar: input inválido, un registro que no existe, una conexión que se cae."
+ },
+ {
+  "key": "c24e8802",
+  "text": "Panic es para bugs, cuando el programa llega a un estado que debería ser imposible. Es la excepción no manejada que termina en un error quinientos."
+ },
+ {
+  "key": "e0cf8515",
+  "text": "No uses panics como flujo de control, como a veces el código Rails va rescatando excepciones para avanzar en la lógica."
+ },
+ {
+  "key": "65293ae0",
+  "text": "Y en el Módulo 5 verás cómo tus enums de error se mapean directamente a códigos de estado HTTP."
+ },
+ {
+  "key": "5294648d",
+  "text": "Result T, E es un enum común: Ok(T) o Err(E). El fallo es parte de la firma."
+ },
+ {
+  "key": "d8ddae12",
+  "text": "match maneja ambos casos. ? extrae el Ok o retorna el Err de forma temprana desde la función actual."
+ },
+ {
+  "key": "9a9524dc",
+  "text": "? convierte errores con From, así que los errores de bajo nivel se componen en tu propio enum de errores."
+ },
+ {
+  "key": "ecf1c413",
+  "text": "unwrap/expect hacen panic si falla. Son como los métodos bang: bien al arrancar y en tests, no con input del usuario."
+ },
+ {
+  "key": "511e599f",
+  "text": "Usa enums de error propios con thiserror en librerías, y anyhow + .context() en aplicaciones."
+ },
+ {
+  "key": "02ed0daf",
+  "text": "Los panics son para bugs. Los fallos esperados son Results."
+ },
+ {
+  "key": "36c5ffeb",
+  "text": "Todo Rubyista tropieza con esto la primera semana. Ruby tiene una sola clase String. Rust tiene dos tipos de string que aparecen por todas partes."
+ },
+ {
+  "key": "df29a9bb",
+  "text": "Al final de esta lección sabrás cuál es cuál, y cuál usar en cada situación."
+ },
+ {
+  "key": "0fbeef48",
+  "text": "En Ruby, un string es un string. Vive en el heap y todos comparten referencias a él."
+ },
+ {
+  "key": "1292c070",
+  "text": "El String de Rust es la versión con dueño. Es dueño de un buffer en el heap, puede crecer, y se libera cuando su dueño sale de scope."
+ },
+ {
+  "key": "7c819783",
+  "text": "Ampersand str, llamado string slice, es una vista prestada. Apunta a unos bytes UTF-8 que no le pertenecen, y no puede cambiarlos."
+ },
+ {
+  "key": "7667afa4",
+  "text": "Un buen modelo mental: el String es el documento, y el str slice es una ventana que mira una parte de él."
+ },
+ {
+  "key": "eeebbbb8",
+  "text": "Miremos bajo el capó. Creamos un String con String from hello."
+ },
+ {
+  "key": "c461575d",
+  "text": "El String en sí son tres números en el stack: un puntero, un largo y una capacidad. Los bytes de verdad viven en el heap."
+ },
+ {
+  "key": "d354084e",
+  "text": "Ahora tomamos un slice de los bytes uno a cuatro. Eso es un str: solo un puntero y un largo, apuntando al mismo buffer del heap."
+ },
+ {
+  "key": "3d2bcecb",
+  "text": "No se copió ningún byte. Por eso los string slices son tan baratos, y por eso no pueden vivir más que el String al que apuntan."
+ },
+ {
+  "key": "995edda4",
+  "text": "Los string literals son str slices. El texto queda incrustado en tu binario compilado, y el slice apunta a él."
+ },
+ {
+  "key": "04775752",
+  "text": "Para obtener un String con dueño, usa String from, o to string. Hacen lo mismo."
+ },
+ {
+  "key": "427feaed",
+  "text": "format es tu interpolación, y siempre produce un String nuevo con dueño."
+ },
+ {
+  "key": "aff1ae42",
+  "text": "Ir en la otra dirección es barato. Presta un String con un ampersand y obtienes un str, o toma una parte con un rango."
+ },
+ {
+  "key": "85fec9fb",
+  "text": "Y to owned copia un slice a un String completamente nuevo."
+ },
+ {
+  "key": "8805889f",
+  "text": "Recuerda la dirección. Crear un String cuesta una reserva de memoria. Prestar uno es gratis."
+ },
+ {
+  "key": "5d044355",
+  "text": "En Ruby nunca piensas en esto. Le pasas un string y recibes un string."
+ },
+ {
+  "key": "57d27666",
+  "text": "En Rust el idiom es: recibe un str slice como parámetro, y retorna un String con dueño cuando construyes texto nuevo."
+ },
+ {
+  "key": "3c382448",
+  "text": "Un parámetro str acepta tanto literales como Strings prestados. El compilador convierte una referencia a String en un str automáticamente. Eso se llama deref coercion."
+ },
+ {
+  "key": "20edc2e5",
+  "text": "Reglas generales: str slices para los parámetros,"
+ },
+ {
+  "key": "d9345f00",
+  "text": "Strings con dueño para los campos de structs y para los valores de retorno."
+ },
+ {
+  "key": "1cf0fabc",
+  "text": "Ruby te esconde el encoding de los strings. El índice uno te da el segundo carácter, aunque ocupe dos bytes."
+ },
+ {
+  "key": "b4ae72aa",
+  "text": "Los strings de Rust siempre son UTF-8 válido, y len cuenta bytes, no caracteres. La e con tilde ocupa dos bytes."
+ },
+ {
+  "key": "9ee5490b",
+  "text": "Para caracteres, itera con chars. Para contarlos, o tomar el enésimo, pasa por ese iterator."
+ },
+ {
+  "key": "298e9c83",
+  "text": "Indexar con un solo entero simplemente no está permitido. Sería ambiguo, y no se podría hacer en tiempo constante."
+ },
+ {
+  "key": "60dc2fb4",
+  "text": "Puedes hacer slice con un rango de bytes, pero si el rango corta un carácter por la mitad, hace panic en tiempo de ejecución. Prefiere chars, o métodos como split y find. Y si de verdad quieres los bytes crudos, as bytes te los da."
+ },
+ {
+  "key": "eaabc49a",
+  "text": "Checkpoint. La función quiere un str slice, y nosotros tenemos un String. ¿Qué llamada funciona?"
+ },
+ {
+  "key": "737e35e4",
+  "text": "Buenas noticias: casi todos tus métodos de String favoritos tienen equivalentes directos. Sobre todo cambian los nombres."
+ },
+ {
+  "key": "431f9c3b",
+  "text": "upcase se convierte en to uppercase, y strip se convierte en trim. Trim retorna un slice del original, así que no reserva memoria."
+ },
+ {
+  "key": "1a53d46c",
+  "text": "split retorna un iterator perezoso en vez de un arreglo. Llama a collect si necesitas un Vec."
+ },
+ {
+  "key": "41be4054",
+  "text": "include con signo de interrogación se convierte en contains, gsub en replace, y start with en starts with."
+ },
+ {
+  "key": "28ca36a2",
+  "text": "Los predicados pierden el signo de interrogación y ganan el prefijo is. Y to i se convierte en parse, que retorna un Result en vez de darte un cero en silencio."
+ },
+ {
+  "key": "6520bfd4",
+  "text": "Construir strings pieza por pieza te resultará familiar. Ruby usa el operador pala."
+ },
+ {
+  "key": "dfa90863",
+  "text": "En Rust necesitas un String mutable, y push str agrega un slice. push agrega un solo carácter."
+ },
+ {
+  "key": "872fbb0d",
+  "text": "El operador más toma un String con dueño a la izquierda y un str a la derecha. Reutiliza el buffer de la izquierda, lo que significa que la variable original se mueve."
+ },
+ {
+  "key": "5fcd89d1",
+  "text": "Y join funciona sobre slices de strings, igual que Array join en Ruby."
+ },
+ {
+  "key": "21af9e81",
+  "text": "String es dueño de su buffer. ref str toma prestada una vista de uno (o de un literal en el binario)."
+ },
+ {
+  "key": "4473d2e2",
+  "text": "Convertir ref str → String reserva memoria (to_string, to_owned, String from, format!). String → ref str es gratis (ref s)."
+ },
+ {
+  "key": "c8fae805",
+  "text": "Recibe parámetros ref str. ref String se convierte en ellos automáticamente."
+ },
+ {
+  "key": "be23307b",
+  "text": "No hay indexación con enteros. len() son bytes, así que usa .chars() para caracteres y rangos de bytes solo en bordes de carácter."
+ },
+ {
+  "key": "e934d253",
+  "text": "La mayoría de los métodos de String de Ruby se mapean 1:1: trim, split, contains, replace, to_uppercase, parse."
+ },
+ {
+  "key": "4e45de86",
+  "text": "Si hay una característica de Ruby que menos vas a extrañar en Rust, es Enumerable, porque Rust también la tiene. Con algunos giros."
+ },
+ {
+  "key": "76d5fe7a",
+  "text": "El Array de Ruby se convierte en Vec, abreviatura de vector. La macro vec es la sintaxis literal."
+ },
+ {
+  "key": "c66d6980",
+  "text": "Debe declararse mut para poder agregarle elementos. Push es tu operador pala."
+ },
+ {
+  "key": "565ec758",
+  "text": "first y get retornan un Option, porque el elemento podría no existir. Get es la versión segura de indexar, como Ruby retornando nil."
+ },
+ {
+  "key": "3f57ebf4",
+  "text": "Indexar con corchetes fuera de rango no retorna nil. Hace panic. Usa get siempre que el índice venga de afuera."
+ },
+ {
+  "key": "5eb9e4c0",
+  "text": "Y un Vec contiene exactamente un tipo de elemento."
+ },
+ {
+  "key": "fb2f22ad",
+  "text": "Aquí está la piedra de Rosetta de Enumerable. Los nombres son casi todos iguales."
+ },
+ {
+  "key": "1eb3e6e8",
+  "text": "Los bloques se convierten en closures. Barras verticales alrededor de los parámetros, luego una expresión, todo dentro de paréntesis."
+ },
+ {
+  "key": "cdbe77be",
+  "text": "select se convierte en filter. No hay reject, simplemente niegas la condición. Y reduce se convierte en fold, con el valor inicial primero."
+ },
+ {
+  "key": "ca547002",
+  "text": "each with index se convierte en enumerate, que entrega pares de índice y valor."
+ },
+ {
+  "key": "aa449114",
+  "text": "Y el resto son viejos amigos: find, any, all, sum, count, take, flat map y zip."
+ },
+ {
+  "key": "60790e62",
+  "text": "Aquí tienes un reporte clásico de Rails: órdenes pagadas, convertidas a totales y sumadas."
+ },
+ {
+  "key": "7ce62ea3",
+  "text": "La versión en Rust se lee casi igual. Lo principal que se agrega es una llamada a iter al inicio."
+ },
+ {
+  "key": "49aa73b3",
+  "text": "Aquí está la gran diferencia. En Ruby, cada paso construye un arreglo completo nuevo. Los adaptadores de iterators de Rust son perezosos, así que por sí solos no hacen nada."
+ },
+ {
+  "key": "73bc81f1",
+  "text": "El trabajo solo ocurre cuando un consumidor como sum tira de los valores a través de la cadena, un elemento a la vez."
+ },
+ {
+  "key": "4ed7c9dd",
+  "text": "El compilador fusiona toda la cadena en un solo loop. Es tan rápido como el loop for que escribirías a mano, así que no hay razón para evitar este estilo."
+ },
+ {
+  "key": "89d3f5c9",
+  "text": "El map de Ruby retorna un arreglo de inmediato. En Rust terminas la cadena con collect, para juntar los resultados en una colección."
+ },
+ {
+  "key": "1587225e",
+  "text": "collect puede construir muchos tipos de colección, así que necesita saber cuál. Anota el tipo de la variable, o usa el turbofish: dos veces dos puntos, y luego corchetes angulares."
+ },
+ {
+  "key": "6fabd5dd",
+  "text": "Junta pares en un HashMap y tienes el index by de Rails."
+ },
+ {
+  "key": "b013eff3",
+  "text": "También hay un truco genial. Juntar un iterator de Results en un Result de un Vec se detiene en el primer error."
+ },
+ {
+  "key": "2da0d3ea",
+  "text": "El each de Ruby siempre te entrega una referencia al elemento. Rust te hace elegir entre tres formas de iterar, y otra vez se trata de ownership."
+ },
+ {
+  "key": "6539ebae",
+  "text": "iter presta cada elemento. Puedes mirar pero no tocar, y el vector sigue ahí después."
+ },
+ {
+  "key": "638855e2",
+  "text": "iter mut entrega referencias mutables, así que puedes cambiar los elementos en el lugar, como el map con bang de Ruby. Fíjate en el asterisco para escribir a través de la referencia."
+ },
+ {
+  "key": "ae72b5ec",
+  "text": "into iter toma ownership de cada elemento. Un loop for simple sobre el vector hace esto, así que el vector se consume y desaparece después."
+ },
+ {
+  "key": "77d08003",
+  "text": "Checkpoint. Fíjate bien en cómo itera el loop."
+ },
+ {
+  "key": "6b3e0479",
+  "text": "El clásico contador de palabras de Ruby usa Hash new con un valor por defecto de cero."
+ },
+ {
+  "key": "0473c6a2",
+  "text": "En Rust, HashMap vive en std collections. Lo importas con use."
+ },
+ {
+  "key": "483c77a5",
+  "text": "La API entry es la forma idiomática de insertar o actualizar. entry encuentra el espacio, or insert pone un cero si falta, y el asterisco te deja modificar el valor."
+ },
+ {
+  "key": "22b563df",
+  "text": "get retorna un Option. Combínalo con copied y unwrap or para obtener el comportamiento de valor por defecto de Ruby."
+ },
+ {
+  "key": "fa0aff23",
+  "text": "Indexar con corchetes una llave que no existe hace panic, muy parecido a cuando fetch lanza un KeyError."
+ },
+ {
+  "key": "2379838b",
+  "text": "Una gran sorpresa para los Rubyistas: el orden de iteración de un HashMap no es el orden de inserción."
+ },
+ {
+  "key": "59ac47ff",
+  "text": "Algunos favoritos más. sort by key ordena por un campo, como sort by con symbol to proc."
+ },
+ {
+  "key": "66d83d5f",
+  "text": "sort by con un comparador te da control total. Aquí, nombres en orden descendente."
+ },
+ {
+  "key": "117d3fa1",
+  "text": "dedup es uniq, con una trampa: solo elimina duplicados consecutivos. Ordena primero, o júntalos en un HashSet."
+ },
+ {
+  "key": "ad105731",
+  "text": "No hay group by en la librería estándar, pero la API entry lo convierte en un loop de tres líneas. El crate itertools agrega muchos más helpers estilo Ruby."
+ },
+ {
+  "key": "daad6942",
+  "text": "Y fíjate que todos estos mutan en el lugar, como las versiones con bang de Ruby."
+ },
+ {
+  "key": "33d8ddd2",
+  "text": "Vec contiene un solo tipo de elemento. get(i) retorna un Option, mientras que v[i] hace panic si está fuera de rango."
+ },
+ {
+  "key": "5474676b",
+  "text": "Los closures |x| expr reemplazan a los bloques. La mayoría de los métodos de Enumerable mantienen su nombre. Los grandes cambios son select → filter y reduce → fold."
+ },
+ {
+  "key": "b3e6cfbb",
+  "text": "Los adaptadores de iterators son perezosos. Un consumidor (sum, count, collect) ejecuta toda la cadena en un solo loop fusionado."
+ },
+ {
+  "key": "6a4faca2",
+  "text": "collect necesita un tipo destino: anota la variable o usa el turbofish Vec _ ."
+ },
+ {
+  "key": "6fab85a1",
+  "text": "for x in ref v presta, ref mut v edita, y for x in v consume el Vec."
+ },
+ {
+  "key": "cdb91fc7",
+  "text": "Usa la API entry de HashMap para contar y agrupar. El orden de iteración no es el orden de inserción."
+ },
+ {
+  "key": "720ae8cc",
+  "text": "Te damos la bienvenida al módulo final. Vamos a construir la versión en Rust de un scaffold de Rails: una API JSON para posts."
+ },
+ {
+  "key": "6a4a9455",
+  "text": "Pero primero necesitamos el motor sobre el que corre todo framework web de Rust: async Rust y el runtime Tokio."
+ },
+ {
+  "key": "5b0a8bfa",
+  "text": "Seamos honestos sobre cómo una app Rails maneja la concurrencia."
+ },
+ {
+  "key": "bc32e559",
+  "text": "Puma te da unos pocos threads por proceso. Sirven para esperar a la base de datos, pero el lock global de la VM hace que solo un thread ejecute código Ruby a la vez."
+ },
+ {
+  "key": "0fdd43da",
+  "text": "Así que, para tener paralelismo real, agregas procesos, y cada proceso carga su propia copia de toda la app en memoria."
+ },
+ {
+  "key": "449f11f6",
+  "text": "Todo lo lento se va a Sidekiq: otro proceso más, con Redis en medio."
+ },
+ {
+  "key": "5108ea10",
+  "text": "Rust con Tokio es distinto. Un solo proceso, un worker thread por núcleo y miles de tareas livianas corriendo de verdad en paralelo. No hay lock global."
+ },
+ {
+  "key": "c22b5fb5",
+  "text": "Este es async Rust en su forma más pequeña."
+ },
+ {
+  "key": "5d129413",
+  "text": "Marcar una función como async significa que puede pausarse mientras espera I/O, como una consulta a la base de datos, una llamada HTTP o un timer."
+ },
+ {
+  "key": "b0d6029b",
+  "text": "Punto await es el punto de pausa. Mientras esta tarea espera, el thread queda libre para ejecutar otras tareas. Ningún thread se queda bloqueado."
+ },
+ {
+  "key": "f407fa7c",
+  "text": "El código async necesita un runtime que lo ejecute. El atributo tokio main inicia uno y corre tu función main async sobre él."
+ },
+ {
+  "key": "d7b1d9f1",
+  "text": "Adentro, llamas funciones async y les haces await. Se lee casi como código secuencial normal. Una regla: punto await solo funciona dentro de una función o bloque async, por eso main también es async."
+ },
+ {
+  "key": "9e754335",
+  "text": "Esta es la sorpresa número uno para quienes recién llegan. Llamar a una función async no la ejecuta."
+ },
+ {
+  "key": "bdd22576",
+  "text": "Devuelve un future, un valor que describe trabajo pendiente. Se comporta como una lambda de Ruby que todavía no has llamado."
+ },
+ {
+  "key": "44489f45",
+  "text": "El trabajo solo ocurre cuando le haces await al future."
+ },
+ {
+  "key": "5e2371bb",
+  "text": "Si olvidas el await, el compilador te avisa. El future se creó y luego se descartó, así que tu código nunca se ejecutó."
+ },
+ {
+  "key": "952f5b35",
+  "text": "Checkpoint. Este es un bug clásico. ¿Qué pasa si quitas el await?"
+ },
+ {
+  "key": "490d0d9f",
+  "text": "Hacer await de una cosa tras otra es secuencial. Dos llamadas de cien milisegundos tardan doscientos milisegundos."
+ },
+ {
+  "key": "109521c4",
+  "text": "tokio join ejecuta varios futures en forma concurrente y espera a todos, así que el total es de unos cien milisegundos."
+ },
+ {
+  "key": "a71585c9",
+  "text": "tokio spawn inicia una tarea independiente en segundo plano. Funciona como perform later, pero corre dentro de tu proceso, sin Redis."
+ },
+ {
+  "key": "8b55e948",
+  "text": "Spawn devuelve un join handle. Hazle await si necesitas el resultado, igual que harías join a un thread de Ruby."
+ },
+ {
+  "key": "92e61fe8",
+  "text": "Fíjate en async move. Una tarea lanzada con spawn puede vivir más que la función que la creó, así que debe ser dueña de sus datos. El compilador llama a este requisito static, y además exige Send para que la tarea pueda moverse entre threads."
+ },
+ {
+  "key": "43c1f9bf",
+  "text": "Async tiene una gran regla: nunca bloquear. Un worker thread atascado en un cálculo pesado no puede ejecutar ninguna otra tarea."
+ },
+ {
+  "key": "bab551ca",
+  "text": "Hashear una contraseña es trabajo puro de CPU, sin nada que esperar. Si lo ejecutas dentro de una función async, todas las requests de ese thread se frenan."
+ },
+ {
+  "key": "9b340f71",
+  "text": "El sleep bloqueante de la biblioteca estándar es todavía peor. Usa siempre la versión async de Tokio."
+ },
+ {
+  "key": "cdc913a8",
+  "text": "Para trabajo pesado de CPU o bloqueante, envuélvelo en spawn blocking. Tokio lo ejecuta en un pool de threads aparte, hecho justo para esto."
+ },
+ {
+  "key": "97eeaf7d",
+  "text": "Y para esperar, usa tokio time sleep, que cede el thread en lugar de retenerlo."
+ },
+ {
+  "key": "9a962f6c",
+  "text": "A veces las tareas necesitan compartir estado, como un contador o una caché en memoria."
+ },
+ {
+  "key": "121dc7e6",
+  "text": "En Ruby podrías usar una variable de clase. Con varios threads, eso es una race condition silenciosa, y nada te avisa."
+ },
+ {
+  "key": "79b5b525",
+  "text": "En Rust envuelves el valor en un Mutex, para que solo una tarea pueda cambiarlo a la vez, y en un Arc, para que muchas tareas puedan ser dueñas de él al mismo tiempo."
+ },
+ {
+  "key": "d7047f5a",
+  "text": "Cada tarea recibe su propio clon del Arc. Clonar un Arc es barato: solo incrementa un contador."
+ },
+ {
+  "key": "ee85e34c",
+  "text": "Y aquí está la recompensa. Si omites el Arc o el Mutex, el programa no compila. En Rust, los data races son errores de tipo."
+ },
+ {
+  "key": "23183f00",
+  "text": "async fn devuelve un future. Es perezoso y no hace nada hasta que le haces .await."
+ },
+ {
+  "key": "2b04aeb7",
+  "text": "#[tokio main] inicia un runtime: worker threads que ejecutan muchas tareas en paralelo de verdad (sin GVL)."
+ },
+ {
+  "key": "10ae71f9",
+  "text": "tokio join! ejecuta futures en forma concurrente. tokio spawn inicia una tarea independiente, como un perform_later dentro del proceso."
+ },
+ {
+  "key": "cf88d731",
+  "text": "Nunca bloquees dentro de código async. Usa spawn_blocking para trabajo de CPU y tokio time sleep para esperar."
+ },
+ {
+  "key": "736333cc",
+  "text": "El estado mutable compartido necesita Arc Mutex T . Sin eso obtienes un error de compilación, no un data race."
+ },
+ {
+  "key": "96904098",
+  "text": "Es hora de construir la API. Usaremos Axum, el framework web más popular de Rust, creado por el equipo de Tokio."
+ },
+ {
+  "key": "84c68c08",
+  "text": "Nuestra meta es la versión en Rust de un scaffold de Rails para posts, empezando por las rutas y los controllers."
+ },
+ {
+  "key": "622a3483",
+  "text": "En Rails, una sola línea resources genera las rutas. Es cómodo, y un poco mágico."
+ },
+ {
+  "key": "8076d335",
+  "text": "Axum no tiene un macro resources. Construyes un Router y declaras cada ruta tú mismo."
+ },
+ {
+  "key": "5e027701",
+  "text": "Cada ruta asocia un método HTTP con una función handler. Get index y post create comparten la ruta posts."
+ },
+ {
+  "key": "da99059c",
+  "text": "Los parámetros de ruta van entre llaves, así que barra posts barra id se convierte en la ruta show."
+ },
+ {
+  "key": "eebe68b9",
+  "text": "Luego agregas el estado compartido, abres un listener TCP y sirves la app. Ese es todo tu config punto ru."
+ },
+ {
+  "key": "d1737df6",
+  "text": "Sigamos una request a través de Axum: get barra posts barra cuarenta y dos."
+ },
+ {
+  "key": "f470e602",
+  "text": "Primero, el router compara el método y la ruta, igual que routes punto r b."
+ },
+ {
+  "key": "a4151f82",
+  "text": "Después vienen los extractors. Sacan valores tipados de la request: el parámetro de ruta como número y el estado compartido de tu app."
+ },
+ {
+  "key": "8dcf85e5",
+  "text": "Luego se ejecuta tu handler. Es una función async común y corriente, el equivalente a una acción de controller."
+ },
+ {
+  "key": "8484f33c",
+  "text": "Lo que devuelva se convierte en una respuesta HTTP mediante el trait IntoResponse."
+ },
+ {
+  "key": "87e07cf5",
+  "text": "Si pones Rails debajo, las formas coinciden: Rack, routes, params, controller, render."
+ },
+ {
+  "key": "5cccfbc7",
+  "text": "La gran diferencia son los tipos. Si el id no es un número, el extractor rechaza la request con un cuatrocientos antes de que corra tu código."
+ },
+ {
+  "key": "80747ead",
+  "text": "Esta es una acción show clásica. Lee el id de params, busca el post y renderiza JSON."
+ },
+ {
+  "key": "eb4964e3",
+  "text": "En Axum, un handler es una función async. Sus parámetros son extractors, y Axum los completa a partir de la request."
+ },
+ {
+  "key": "15e6e579",
+  "text": "Path de i64 es params id, ya convertido a número. State te da cosas compartidas, como el pool de la base de datos."
+ },
+ {
+  "key": "0b594c5c",
+  "text": "El tipo de retorno documenta todos los resultados posibles: el JSON de un post, o un código de estado de error."
+ },
+ {
+  "key": "f9a374cc",
+  "text": "find devuelve un Option. Envolvemos el post encontrado en Json y convertimos None en un cuatrocientos cuatro. Es el record not found de Rails, pero explícito."
+ },
+ {
+  "key": "4cd484e9",
+  "text": "Rails necesita strong params para filtrar la entrada, y as json para darle forma a la salida."
+ },
+ {
+  "key": "10696f03",
+  "text": "Rust usa serde para ambas cosas. Si derivas Serialize en un struct, se puede convertir en JSON."
+ },
+ {
+  "key": "6d6cd74d",
+  "text": "Si derivas Deserialize en un struct de entrada, ese struct pasa a ser tus strong params. Solo se aceptan estos campos, con estos tipos."
+ },
+ {
+  "key": "0817df84",
+  "text": "Los atributos ajustan el comportamiento. Con serde default, published es opcional y vale false por defecto."
+ },
+ {
+  "key": "55ada225",
+  "text": "La acción create recibe un extractor Json, que deserializa el body de la request en el struct New Post."
+ },
+ {
+  "key": "be11b098",
+  "text": "El orden importa. El body solo se puede leer una vez, así que un extractor de body como Json debe ser el último argumento."
+ },
+ {
+  "key": "9113d556",
+  "text": "Devolver una tupla con un código de estado y JSON te da un doscientos uno Created, como render json con status created."
+ },
+ {
+  "key": "09f99fc5",
+  "text": "Para index, el extractor Query parsea el query string, algo muy útil para los parámetros de paginación."
+ },
+ {
+  "key": "bc4b58d0",
+  "text": "Y la entrada inválida nunca llega a tu código. Axum la rechaza automáticamente con el status correcto."
+ },
+ {
+  "key": "c89164b9",
+  "text": "Checkpoint. En internet vas a encontrar tutoriales antiguos, así que ¿cuál es la sintaxis actual?"
+ },
+ {
+  "key": "fbe1d30f",
+  "text": "El estado compartido es un struct que deriva Clone. Axum lo clona en cada request, así que envuelve las partes costosas en un Arc para que clonar sea barato."
+ },
+ {
+  "key": "971de34e",
+  "text": "El middleware viene del ecosistema tower y se agrega con layer. Es el Rack de Rust."
+ },
+ {
+  "key": "eb1121df",
+  "text": "El crate tower http te da layers listos para usar: CORS como rack cors, tracing de requests, compresión y timeouts."
+ },
+ {
+  "key": "52a7aa08",
+  "text": "Y un before action se convierte en una función middleware, o en un extractor propio que autentica al usuario."
+ },
+ {
+  "key": "06b4705c",
+  "text": "Router new().route(\"/posts/{id}\", get(show)): rutas explícitas, y Axum 0.8 usa {param}."
+ },
+ {
+  "key": "55b6cde1",
+  "text": "Los handlers son async fns. Los extractors en sus argumentos convierten la request en valores tipados y rechazan automáticamente la entrada inválida."
+ },
+ {
+  "key": "1e201129",
+  "text": "Los extractors de body, como Json T , deben ser el último argumento."
+ },
+ {
+  "key": "d1cf78d3",
+  "text": "Los structs de entrada con #[derive(Deserialize)] son strong params, y #[derive(Serialize)] reemplaza a as_json."
+ },
+ {
+  "key": "c6990bb1",
+  "text": "Devuelve cualquier cosa que implemente IntoResponse. Comparte estado con .with_state y agrega middleware con .layer(...)."
+ },
+ {
+  "key": "a4fadd79",
+  "text": "Todo developer de Rails tiene una relación con ActiveRecord. En esta lección conectamos nuestra API de posts a Postgres al estilo de Rust, con SQLx."
+ },
+ {
+  "key": "2f31b6e2",
+  "text": "ActiveRecord es un ORM. Los modelos conocen sus tablas, los scopes se encadenan y el SQL queda casi siempre oculto."
+ },
+ {
+  "key": "9aeada39",
+  "text": "SQLx hace un intercambio distinto. Escribes SQL de verdad, y los macros lo verifican contra el esquema real de tu base de datos al compilar."
+ },
+ {
+  "key": "7868dcec",
+  "text": "Si extrañas el estilo ORM, Diesel ofrece un query builder con tipos seguros, y SeaORM es lo más parecido a ActiveRecord. Usamos SQLx porque es la opción más popular junto a Axum."
+ },
+ {
+  "key": "8839602b",
+  "text": "Primero, el esquema. Instala la herramienta de línea de comandos de sqlx, que cumple el rol de las tareas rails db."
+ },
+ {
+  "key": "f3a91edb",
+  "text": "Apúntala a tu base de datos con la variable DATABASE URL, y luego crea la base de datos, como rails db create."
+ },
+ {
+  "key": "8c7d257b",
+  "text": "sqlx migrate add crea un archivo de migración con timestamp, como rails generate migration."
+ },
+ {
+  "key": "f1beee0b",
+  "text": "La diferencia: las migraciones son SQL plano, sin DSL de Ruby. Un id big serial, columnas not null y valores por defecto, escritos a mano."
+ },
+ {
+  "key": "7017ea5f",
+  "text": "Luego sqlx migrate run la aplica, igual que rails db migrate."
+ },
+ {
+  "key": "ba21d7e1",
+  "text": "En Rails, database yml configura un pool de conexiones que ActiveRecord administra tras bambalinas."
+ },
+ {
+  "key": "164a85b9",
+  "text": "En Rust el pool es un valor común y corriente. Un PgPool va en el estado de tu app, y los handlers lo reciben mediante el extractor State."
+ },
+ {
+  "key": "4f62b76e",
+  "text": "Lo construyes con las opciones del pool: el máximo de conexiones, y luego te conectas con la URL del entorno."
+ },
+ {
+  "key": "0e0dc2fe",
+  "text": "El macro migrate incrusta tus archivos de migración en el binario, así que la app puede migrarse sola al arrancar."
+ },
+ {
+  "key": "04af15ce",
+  "text": "Clonar un pool es barato, porque por dentro usa conteo de referencias. Por eso el estado puede derivar Clone."
+ },
+ {
+  "key": "8592a8da",
+  "text": "Tus finders de ActiveRecord se corresponden con un pequeño grupo de métodos fetch."
+ },
+ {
+  "key": "d1ceb399",
+  "text": "fetch all devuelve un vector, como Post punto all."
+ },
+ {
+  "key": "622441fa",
+  "text": "fetch one espera exactamente una fila. Si no hay ninguna, obtienes un error row not found, muy parecido a cuando find lanza record not found."
+ },
+ {
+  "key": "b700a93f",
+  "text": "fetch optional devuelve un Option, la versión en Rust de un find by que devuelve nil."
+ },
+ {
+  "key": "dc61cc05",
+  "text": "Las cláusulas where son simplemente SQL con parámetros numerados. Los parámetros siempre se enlazan, nunca se interpolan, así que la protección contra inyección SQL viene gratis."
+ },
+ {
+  "key": "eab4c193",
+  "text": "Los creates usan insert con returning, así Postgres te devuelve la fila nueva con su id. Los deletes y updates usan execute."
+ },
+ {
+  "key": "408e9dec",
+  "text": "Esta es la característica estrella. El macro query as recibe un struct de destino, un string SQL y los parámetros a enlazar."
+ },
+ {
+  "key": "3058774f",
+  "text": "Al compilar, SQLx envía esta consulta a tu base de datos de desarrollo y la verifica: que las columnas existan, que los tipos coincidan con los campos del struct y que el parámetro sea un i64."
+ },
+ {
+  "key": "c40de05a",
+  "text": "Si te equivocas al escribir el nombre de una columna, el build falla. Encuentras el problema al compilar, no en producción."
+ },
+ {
+  "key": "057f896c",
+  "text": "Luego fetch optional la ejecuta y mapea la fila a un Post, dándote un Option."
+ },
+ {
+  "key": "5e799c85",
+  "text": "FromRow solo se necesita para la función query as sin macro. Es útil para consultas dinámicas que no se pueden verificar al compilar."
+ },
+ {
+  "key": "ff2de556",
+  "text": "Checkpoint. Find by, el finder que devuelve nil. ¿Qué método fetch le corresponde?"
+ },
+ {
+  "key": "3092748d",
+  "text": "En Rails, las transacciones usan un bloque. Si lanzas una excepción dentro, todo se revierte."
+ },
+ {
+  "key": "2d784b86",
+  "text": "En SQLx inicias una transacción y obtienes un valor de transacción."
+ },
+ {
+  "key": "e5fb14ce",
+  "text": "Cada consulta se ejecuta contra la transacción en lugar del pool."
+ },
+ {
+  "key": "d7782428",
+  "text": "Luego haces commit. Aquí es donde brilla el ownership: si algún signo de interrogación retorna antes, la transacción se descarta sin commit, y SQLx la revierte automáticamente."
+ },
+ {
+  "key": "56d2f70d",
+  "text": "Última pieza: el manejo de errores. Rails tiene rescue from, que convierte record not found en un cuatrocientos cuatro."
+ },
+ {
+  "key": "4cbca829",
+  "text": "En Rust defines un enum de errores de la app. Implementar From para los errores de sqlx convierte row not found en Not Found y envuelve todo lo demás."
+ },
+ {
+  "key": "8c64c5b1",
+  "text": "Luego implementas IntoResponse y decides el status HTTP de cada variante. Not found es cuatrocientos cuatro, invalid es cuatrocientos veintidós y todo lo demás es un quinientos."
+ },
+ {
+  "key": "aee3f545",
+  "text": "Ahora los handlers devuelven un Result con tu error de app como tipo de error."
+ },
+ {
+  "key": "d0f478a2",
+  "text": "Adentro, solo escribes el camino feliz. fetch one te da un post o un error."
+ },
+ {
+  "key": "bc263b52",
+  "text": "El operador signo de interrogación convierte un error de base de datos en un error de app mediante tu implementación de From, y retorna antes."
+ },
+ {
+  "key": "4bd3f22e",
+  "text": "Después Axum llama a into response sobre él. Un post que no existe se convierte en un cuatrocientos cuatro: rescue from, verificado por el sistema de tipos."
+ },
+ {
+  "key": "707ddbb4",
+  "text": "sqlx migrate add / run reemplazan a rails g migration / db:migrate. Las migraciones son SQL plano."
+ },
+ {
+  "key": "3e7ea573",
+  "text": "Un PgPool es barato de clonar. Guárdalo en AppState y sácalo con State."
+ },
+ {
+  "key": "7f5c5e33",
+  "text": "query_as!(Post, \"SELECT …\", args) se verifica al compilar contra tu esquema."
+ },
+ {
+  "key": "dc7e4060",
+  "text": "fetch_one ≈ find (error si no existe), fetch_optional ≈ find_by (Option), fetch_all ≈ where/all."
+ },
+ {
+  "key": "2af4ad3d",
+  "text": "Las transacciones se revierten si se descartan sin commit(). Convierte sqlx Error en tu propio AppError con From, y en status HTTP con IntoResponse."
+ },
+ {
+  "key": "b2226d5d",
+  "text": "La lección final. Vamos a testear nuestra API de posts, luego a desplegarla, y terminaremos viendo hacia dónde seguir en tu camino con Rust."
+ },
+ {
+  "key": "966b48af",
+  "text": "Este es un model spec conocido: describe, it, expect to eq."
+ },
+ {
+  "key": "b2e1b9a2",
+  "text": "En Rust, los tests unitarios viven en el mismo archivo que el código que prueban, dentro de un módulo llamado tests."
+ },
+ {
+  "key": "26eb5f03",
+  "text": "El atributo cfg test significa que este módulo solo se compila cuando ejecutas cargo test. Nunca llega a tu binario de release."
+ },
+ {
+  "key": "be76fef2",
+  "text": "use super asterisco trae el módulo padre al scope. Como los tests viven dentro del módulo, incluso pueden probar funciones privadas."
+ },
+ {
+  "key": "9b21992f",
+  "text": "Cada test es una función marcada con el atributo test. assert eq es tu expect to eq, y si falla imprime ambos valores."
+ },
+ {
+  "key": "26abdb5a",
+  "text": "cargo test compila tu proyecto en modo test y ejecuta todos los tests, en paralelo por defecto."
+ },
+ {
+  "key": "ae3a2627",
+  "text": "Pasa parte de un nombre para filtrar, como cuando ejecutas rspec sobre un solo archivo."
+ },
+ {
+  "key": "b2435d9e",
+  "text": "Los tests unitarios están junto al código. Los tests de integración, el equivalente a los request specs, van en una carpeta tests en la raíz y usan tu crate desde afuera."
+ },
+ {
+  "key": "53fd9340",
+  "text": "Las aserciones son macros. Para los errores, revisa is err sobre el Result, o marca el test con should panic."
+ },
+ {
+  "key": "4ba731ed",
+  "text": "No hay FactoryBot. Pequeñas funciones builder, o el trait Default, hacen el trabajo."
+ },
+ {
+  "key": "d962e3d2",
+  "text": "Ahora, la API en sí. Los request specs de Rails disparan requests falsas contra tu app sin un servidor real. Axum puede hacer lo mismo."
+ },
+ {
+  "key": "eb2fa292",
+  "text": "El atributo sqlx test crea una base de datos de prueba nueva para cada test, aplica tus migraciones y te entrega un pool. Funciona como los transactional fixtures, pero totalmente aislado."
+ },
+ {
+  "key": "7e8f8779",
+  "text": "Construye el mismo router que usa tu función main y luego llama a oneshot con una request. Sin puerto, sin servidor HTTP: solo una llamada a una función."
+ },
+ {
+  "key": "18bfbf88",
+  "text": "Y verifica el status de la respuesta, o lee el body y parsea el JSON."
+ },
+ {
+  "key": "020fc14b",
+  "text": "Checkpoint. ¿Tus tests terminan dentro de tu binario de producción?"
+ },
+ {
+  "key": "efe376f5",
+  "text": "Despliegue. En Rails, tu imagen de producción necesita Ruby, todas las gems, quizás Node para los assets, y un bundle install."
+ },
+ {
+  "key": "1d463d6b",
+  "text": "Rust usa un build multi-stage. La primera etapa tiene toda la toolchain del compilador y construye un binario de release."
+ },
+ {
+  "key": "c03106a8",
+  "text": "SQLX OFFLINE le dice a los macros de consultas que usen los metadatos en caché de cargo sqlx prepare, así el build no necesita una base de datos."
+ },
+ {
+  "key": "5c0cfcec",
+  "text": "La segunda etapa parte de una imagen Debian slim y copia un solo archivo: el binario. Sin compilador, sin código fuente, sin gems."
+ },
+ {
+  "key": "bb1d2b5f",
+  "text": "El resultado es una imagen pequeña que arranca en milisegundos y corre cómodamente en la instancia más pequeña que puedas contratar."
+ },
+ {
+  "key": "df187f60",
+  "text": "Configuración. Rails tiene credenciales encriptadas y variables de entorno."
+ },
+ {
+  "key": "7e1021ee",
+  "text": "Las apps de Rust siguen el estilo twelve-factor: leen variables de entorno, y en desarrollo cargan un archivo punto env con el crate dotenvy."
+ },
+ {
+  "key": "df67d277",
+  "text": "Para logging, el estándar es el crate tracing. Instala un subscriber una vez al arrancar y controla el nivel de detalle con la variable RUST LOG."
+ },
+ {
+  "key": "c490dc68",
+  "text": "Las llamadas de log son estructuradas. Campos como post id son pares clave-valor reales, listos para logs en JSON y tus herramientas de observabilidad."
+ },
+ {
+  "key": "74b370ae",
+  "text": "Ese es todo el recorrido: ownership, borrowing, enums, traits, errores, async y una API web real con base de datos, tests y una imagen Docker."
+ },
+ {
+  "key": "e3299421",
+  "text": "Mantén el impulso. Haz Rustlings o el track de Exercism un poco cada día."
+ },
+ {
+  "key": "a60b9ea1",
+  "text": "Para una versión en formato libro de lo que acabamos de construir, lee Zero to Production in Rust."
+ },
+ {
+  "key": "09c651d3",
+  "text": "O lleva Rust de vuelta a casa: escribe una gem nativa con magnus para acelerar un hot path de tu app Rails."
+ },
+ {
+  "key": "415850cc",
+  "text": "Aprende los crates del día a día, y vuelve a ver el módulo de ownership. La segunda vez todo encaja."
+ },
+ {
+  "key": "7e4ddc7f",
+  "text": "Sobre todo, lanza algo pequeño y real. Gracias por tomar Rust para devs de Rails. Te damos la bienvenida, Rustacean."
+ },
+ {
+  "key": "cf3a0b12",
+  "text": "#[cfg(test)] mod tests { use super *; #[test] fn … }: solo se compila para cargo test."
+ },
+ {
+  "key": "712ce233",
+  "text": "Los tests de integración en tests/*.rs usan tu crate como un usuario externo, el equivalente a los request specs."
+ },
+ {
+  "key": "f93bfadd",
+  "text": "app.oneshot(request) prueba el router completo sin servidor. #[sqlx test] le da a cada test una base de datos nueva y migrada."
+ },
+ {
+  "key": "1624d1aa",
+  "text": "Un build de Docker multi-stage despliega solo el binario de release: imágenes pequeñas y arranques en milisegundos."
+ },
+ {
+  "key": "5712a3e1",
+  "text": "La configuración viene de variables de entorno (dotenvy para el .env local). tracing da logs estructurados controlados por RUST_LOG."
+ }
+]
