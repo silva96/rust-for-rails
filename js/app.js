@@ -41,6 +41,12 @@
     return a + (s.watched ? 50 : 0) + Math.round((s.quiz || 0) / 2) + Object.values(s.practice || {}).filter(Boolean).length * 25 + (s.cp || 0) * 5;
   }, 0);
 
+  // ---------- donations ----------
+  const DONATE_URL = 'https://www.paypal.com/donate/?hosted_button_id=8BKEMESVG3XS2';
+  const donateBtn = (cls = 'btn donate') => `<a class="${cls}" href="${DONATE_URL}" target="_blank" rel="noopener noreferrer">♥ ${t('donateBtn')}</a>`;
+  // "Enjoying the course?" prompt shown when a module (or the whole course) is finished
+  const donatePrompt = (title, cls = '') => `<div class="donate-prompt ${cls}"><div><b>${title}</b><span>${t('donateAsk')}</span></div>${donateBtn()}</div>`;
+
   // ---------- confetti ----------
   window.confetti = function (anchor) {
     const rc = (anchor || document.body).getBoundingClientRect();
@@ -77,7 +83,7 @@
       const ul = h('div', 'tls');
       m.lessons.forEach((l) => {
         const st = status(l);
-        const a = h('a', `tl ${st} ${l.id === cur ? 'cur' : ''}`, `<span class="st">${st === 'done' ? '✓' : st === 'started' ? '◐' : '○'}</span><span class="ln">${l.title}</span><span class="du">${fmt(l.duration)}</span>`);
+        const a = h('a', `tl ${st} ${l.id === cur ? 'cur' : ''}`, `<span class="st">${st === 'done' ? '✓' : st === 'started' ? '◐' : '○'}</span><span class="ltitle">${l.title}</span><span class="du">${fmt(l.duration)}</span>`);
         a.href = `#/lesson/${l.id}`;
         a.dataset.search = (l.title + ' ' + m.title + ' ' + (l.summary?.points || []).join(' ') + ' ' + (l.tags || []).join(' ')).toLowerCase();
         ul.appendChild(a);
@@ -86,7 +92,7 @@
       list.appendChild(mod);
     });
     const extra = h('div', 'tmod open extra');
-    extra.innerHTML = `<div class="tls"><a class="tl" href="#/glossary"><span class="st">📖</span><span class="ln">${t('rosettaTitle')}</span></a><a class="tl" href="#/shortcuts"><span class="st">⌨️</span><span class="ln">${t('shortcutsTitle')}</span></a></div>`;
+    extra.innerHTML = `<div class="tls"><a class="tl" href="#/glossary"><span class="st">📖</span><span class="ltitle">${t('rosettaTitle')}</span></a><a class="tl" href="#/shortcuts"><span class="st">⌨️</span><span class="ltitle">${t('shortcutsTitle')}</span></a><a class="tl" href="${DONATE_URL}" target="_blank" rel="noopener noreferrer"><span class="st donate-link">♥</span><span class="ltitle">${t('donateShort')} <span class="donate-link">${t('donateBtn')}</span></span></a></div>`;
     list.appendChild(extra);
     sidebar.appendChild(list);
     const search = $('.tsearch', sidebar);
@@ -150,6 +156,7 @@
         <pre class="ha rust">${HL.highlight('struct User { role: Role }\n\nimpl User {\n    fn is_admin(&self) -> bool {\n        matches!(self.role, Role::Admin)\n    }\n}', 'rust')}</pre>
       </div>`;
     main.appendChild(hero);
+    if (overall() === 100) main.appendChild(h('section', 'course-done', donatePrompt(t('courseDone'), 'big')));
 
     const how = h('section', 'how');
     how.innerHTML = `<h2>${t('howTitle')}</h2><div class="how-grid">${t('how').map(([i, b, p]) => `<div><span>${i}</span><b>${b}</b><p>${p}</p></div>`).join('')}</div>`;
@@ -167,6 +174,7 @@
         ul.insertAdjacentHTML('beforeend', `<a href="#/lesson/${l.id}" class="ml ${st}"><span class="st">${st === 'done' ? '✓' : st === 'started' ? '◐' : l.n + 1}</span><span class="t">${l.title}</span><span class="d">${fmt(l.duration)}</span></a>`);
       });
       card.appendChild(ul);
+      if (done === m.lessons.length) card.appendChild(h('div', 'mod-done', donatePrompt(t('moduleDone', { n: mi + 1 }))));
       mods.appendChild(card);
     });
     main.appendChild(mods);
@@ -201,10 +209,11 @@
       onEnd: () => {
         const first = !s.watched;
         s.watched = true; s.pos = 0; save(); renderTOC();
+        updateDonateSlot();
         endCard.classList.add('show');
         if (first) window.confetti(pwrap);
       },
-      onEnded: () => endCard.classList.add('show'),
+      onEnded: () => { updateDonateSlot(); endCard.classList.add('show'); },
       onCheckpoint: (sc, ok) => { if (ok) { s.cp = (s.cp || 0) + 1; save(); } },
       onBeat: (si, bi) => {
         if (!transcript) return;
@@ -218,7 +227,19 @@
       ${(l.practice || []).length ? `<button class="btn" data-go="practice">${t('goPractice')}</button>` : ''}
       <button class="btn ghost" data-go="summary">${t('readSummary')}</button>
       ${next ? `<a class="btn ghost" href="#/lesson/${next.id}">${t('nextLesson')}</a>` : ''}
-      <button class="btn ghost" data-go="replay">${t('replay')}</button></div></div>`;
+      <button class="btn ghost" data-go="replay">${t('replay')}</button></div>
+      <div class="ec-donate-slot"></div></div>`;
+    // "Module complete" / "course complete" only when every OTHER lesson in it is really done
+    // (video watched and quiz passed). The lesson on screen only needs its video, which just ended.
+    // Evaluated each time the card is shown, because progress changes while the page is open.
+    const updateDonateSlot = () => {
+      const othersDone = (list) => list.every((x) => x === l || status(x) === 'done');
+      let html = '';
+      if (l.li === l.module.lessons.length - 1 && othersDone(l.module.lessons)) {
+        html = donatePrompt(!next && othersDone(lessons) ? t('courseDone') : t('moduleDone', { n: l.mi + 1 }), 'ec-donate');
+      }
+      endCard.querySelector('.ec-donate-slot').innerHTML = html;
+    };
     endCard.addEventListener('click', (e) => {
       e.stopPropagation(); // clicks on the end card must never reach the video (which would toggle play)
       const g = e.target.closest('[data-go]'); if (!g) return;
